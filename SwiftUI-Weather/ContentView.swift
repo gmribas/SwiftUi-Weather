@@ -8,24 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var isNight = false
+    
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [.blue, Color("lightBlue")]),
-                           startPoint: .top,
-                           endPoint: .bottomTrailing)
-            .edgesIgnoringSafeArea(.all)
+            BackgroundView(isNight: $isNight)
             
             VStack {
                 WeatherAndTemperatureView(
                     dayOfWeek: "Cupertino, CA",
                     dayTextSize: 32,
-                    icon: "cloud.sun.fill",
+                    icon: isNight ? "moon.stars.fill" : "cloud.sun.fill",
                     temperature: 76,
                     temperatureSize: 70,
-                    iconFrame: 180)
+                    iconFrame: 180,
+                    textFrameW: 250,
+                    textFrameH: 50
+                )
                 
                 
-                let weatherIconList: [String] = ["cloud.sun.rain.fill", "wind", "cloud.moon.rain.fill", "cloud.moon.bolt", "smoke.fill"]
+                let weatherIconList: [String] = ["cloud.sun.rain.fill", "wind", "cloud.moon.rain.fill", "cloud.moon.bolt.fill", "smoke.fill"]
                 
                 let weatherList: [WeatherAndTemperatureView] = [
                     WeatherAndTemperatureView(
@@ -85,10 +88,20 @@ struct ContentView: View {
                 ]
 
                 HStack(spacing: 10) {
-                    ForEach(weatherList, id: \.temperature) { item in
+                    ForEach(weatherList, id: \.dayOfWeek.hashValue) { item in
                         item
                     }
                 }
+                
+                Spacer()
+                
+                Button {
+                    isNight.toggle()
+                } label: {
+                    WeatherButton(text: "Change day time", textColor: Color.blue, backgroundColor: Color.white)
+                }
+
+                Spacer()
             }
             
         }

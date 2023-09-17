@@ -8,7 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct WeatherAndTemperatureView: View {
+struct WeatherView: View {
+    
+    @StateObject var container: MVIContainer<WeatherIntentProtocol, WeatherModelStatePotocol>
+
+    private var intent: WeatherIntentProtocol { container.intent }
+    private var state: WeatherModelStatePotocol { container.model }
+    
     let dayOfWeek: String
     let dayTextSize: CGFloat
     let icon: String
@@ -52,7 +58,7 @@ struct WeatherAndTemperatureView_Previews: PreviewProvider {
                            endPoint: .bottomTrailing)
             .edgesIgnoringSafeArea(.all)
         
-            WeatherAndTemperatureView(
+            WeatherView(
                 dayOfWeek: "FRI",
                 dayTextSize: 12,
                 icon: "cloud.sun.rain.fill",

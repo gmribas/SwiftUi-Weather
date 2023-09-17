@@ -16,7 +16,7 @@ struct ContentView: View {
             BackgroundView(isNight: $isNight)
             
             VStack {
-                WeatherAndTemperatureView(
+                WeatherView(
                     dayOfWeek: "Cupertino, CA",
                     dayTextSize: 32,
                     icon: isNight ? "moon.stars.fill" : "cloud.sun.fill",
@@ -30,8 +30,8 @@ struct ContentView: View {
                 
                 let weatherIconList: [String] = ["cloud.sun.rain.fill", "wind", "cloud.moon.rain.fill", "cloud.moon.bolt.fill", "smoke.fill"]
                 
-                let weatherList: [WeatherAndTemperatureView] = [
-                    WeatherAndTemperatureView(
+                let weatherList: [WeatherView] = [
+                    WeatherView(
                         dayOfWeek: "MON",
                         dayTextSize: 14,
                         icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],
@@ -42,7 +42,7 @@ struct ContentView: View {
                         textFrameH: 50
                     ),
 
-                    WeatherAndTemperatureView(
+                    WeatherView(
                         dayOfWeek: "TUE",
                         dayTextSize: 12,
                         icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],
@@ -53,7 +53,7 @@ struct ContentView: View {
                         textFrameH: 50
                     ),
 
-                    WeatherAndTemperatureView(
+                    WeatherView(
                         dayOfWeek: "WED",
                         dayTextSize: 12,
                         icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],
@@ -64,7 +64,7 @@ struct ContentView: View {
                         textFrameH: 50
                     ),
 
-                    WeatherAndTemperatureView(
+                    WeatherView(
                         dayOfWeek: "THR",
                         dayTextSize: 12,
                         icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],
@@ -75,7 +75,7 @@ struct ContentView: View {
                         textFrameH: 50
                     ),
 
-                    WeatherAndTemperatureView(
+                    WeatherView(
                         dayOfWeek: "FRI",
                         dayTextSize: 12,
                         icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],

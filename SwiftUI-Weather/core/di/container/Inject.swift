@@ -8,7 +8,7 @@
 import Foundation
 
 @propertyWrapper
-struct Dependency<T> {
+struct Inject<T> {
     
     private var dependency: T
     

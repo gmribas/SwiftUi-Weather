@@ -7,12 +7,12 @@
 
 import Foundation
 
-class BaseRepositoryImpl:  BaseRepository {
+class BaseRepositoryImpl: BaseRepository {
     
-    @Dependency<JSONDecoder> var decoder: JSONDecoder
+    @Inject var decoder: JSONDecoder
     
     init(decoder: JSONDecoder) {
-        self._decoder = Dependency(.automatic, dependency: decoder)
+        self._decoder = Inject(.automatic, dependency: decoder)
     }
     
     // Executes the API request with the given endpoint and decodes the response into the specified model type.

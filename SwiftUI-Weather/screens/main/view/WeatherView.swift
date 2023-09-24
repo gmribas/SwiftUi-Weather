@@ -10,11 +10,6 @@ import SwiftUI
 
 struct WeatherView: View {
     
-    @StateObject var container: MVIContainer<WeatherIntentProtocol, WeatherModelStatePotocol>
-
-    private var intent: WeatherIntentProtocol { container.intent }
-    private var state: WeatherModelStatePotocol { container.model }
-    
     let dayOfWeek: String
     let dayTextSize: CGFloat
     let icon: String
@@ -46,11 +41,13 @@ struct WeatherView: View {
                     .font(.system(size: temperatureSize, weight: .medium))
                     .foregroundColor(.white)
             }
-        }.frame(width: iconFrame)
+        }
+        .frame(width: iconFrame)
     }
 }
 
-struct WeatherAndTemperatureView_Previews: PreviewProvider {
+#if DEBUG
+struct WeatherView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             LinearGradient(gradient: Gradient(colors: [.blue, .white]),
@@ -72,3 +69,4 @@ struct WeatherAndTemperatureView_Previews: PreviewProvider {
         
     }
 }
+#endif

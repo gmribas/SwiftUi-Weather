@@ -11,21 +11,12 @@ import SwiftUI
 struct SwiftUI_WeatherApp: App {
     
     init() {
-        setupDependencyContainer()
+        AppEnvironment.bootstrap()
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WeatherHomeView.build()
         }
     }
-    
-    private func setupDependencyContainer() {
-        RestDependencyInjection.register()
-        
-//        ServiceContainer.register(type: ServiceA.self, ServiceA())
-//        ServiceContainer.register(type: ServiceB.self, ServiceB())
-//        ServiceContainer.register(type: ServiceC.self, ServiceC())
-    }
-    
 }

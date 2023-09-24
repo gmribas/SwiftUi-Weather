@@ -34,9 +34,9 @@ extension WeatherRouter {
     func makeScreen(type: RouterScreenType) -> some View {
         switch type {
         case let .showWeather(condition: CurrentConditionResponse):
-//            WeatherAndTemperatureView.build()
+            WeatherHomeView.build()
             // MARK: fixme
-            ItemView.build(data: .init(title: title, url: url))
+//            ItemView.build(data: .init(title: title, url: url))
         }
     }
 

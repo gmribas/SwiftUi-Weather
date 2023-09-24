@@ -7,12 +7,12 @@
 
 import Foundation
 
-final class RestDependencyInjection {
+struct RestDependencyInjection {
     
     static func register() {
         let jsonDecoder = jsonDecoderBuilder()
         DependencyInjectionContainer.register(JSONDecoder.self, jsonDecoder)
-        DependencyInjectionContainer.register(BaseRepository.self, BaseRepositoryImpl(decoder: jsonDecoder) )
+        DependencyInjectionContainer.register(CurrentWeatherRemoteRepository.self, CurrentWeatherRemoteRepositoryImpl(session: configuredURLSession()))
     }
     
     private static func jsonDecoderBuilder() -> JSONDecoder {
@@ -27,5 +27,16 @@ final class RestDependencyInjection {
         decoder.keyDecodingStrategy = decoder.keyDecodingStrategy
         
         return decoder
+    }
+    
+    private static func configuredURLSession() -> URLSession {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 60
+        configuration.timeoutIntervalForResource = 120
+        configuration.waitsForConnectivity = true
+        configuration.httpMaximumConnectionsPerHost = 5
+        configuration.requestCachePolicy = .returnCacheDataElseLoad
+        configuration.urlCache = .shared
+        return URLSession(configuration: configuration)
     }
 }

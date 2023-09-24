@@ -14,12 +14,12 @@ struct CurrentCondition: Codable {
     let isDay: Int
     let condition: Condition
     let windMph, windKph: Double
-    let windDegree: Int
+    let windDegree: Double
     let windDir: String
     let pressureMB: Int
     let pressureIn: Double
-    let precipMm, precipIn, humidity, cloud: Int
-    let feelslikeC, feelslikeF, visKM, visMiles: Int
+    let precipMm, precipIn, humidity, cloud: Double
+    let feelslikeC, feelslikeF, visKM, visMiles: Double
     let uv: Int
     let gustMph, gustKph: Double
     let airQuality: [String: Double]

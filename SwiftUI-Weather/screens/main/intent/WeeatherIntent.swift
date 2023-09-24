@@ -7,31 +7,32 @@
 
 import SwiftUI
 
-class WeatherIntent {
+struct WeatherIntent {
 
     // MARK: Model
 
     private weak var model: WeatherModelActionsProtocol?
     private weak var routeModel: WeatherModelRouterProtocol?
+    
+    // MARK: Interactor
 
-    // MARK: Services
-
-    private let urlService: WWDCUrlServiceProtocol
-
+    private var interactor: CurrentWeatherInteractor
+    
     // MARK: Business Data
 
     private let externalData: WeatherTypes.Intent.ExternalData
-    private var condition: CurrentConditionResponse?
-
+    
+    private let cancelBag = CancelBag()
+    
     // MARK: Life cycle
 
     init(model: WeatherModelActionsProtocol & WeatherModelRouterProtocol,
          externalData: WeatherTypes.Intent.ExternalData,
-         urlService: WWDCUrlServiceProtocol) {
+         interactor: CurrentWeatherInteractor) {
         self.externalData = externalData
         self.model = model
         self.routeModel = model
-        self.urlService = urlService
+        self.interactor = interactor
     }
 }
 
@@ -41,17 +42,25 @@ extension WeatherIntent: WeatherIntentProtocol {
 
     func viewOnAppear() {
         model?.dispalyLoading()
-
-        urlService.fetch(contnet: .swiftUI) { [weak self] result in
-            switch result {
-            case let .success(contents):
-                self?.contents = contents
-                self?.model?.update(contents: contents)
-
-            case let .failure(error):
-                self?.model?.dispalyError(error)
+        
+        // FIXME: get location via GPS
+        interactor.getCurrentWeather(location: "Castro,PR,Brazil")
+            .sinkToResult { result in
+                
+                // FIXME: define its value
+//                fetchCompletion(result.isSuccess ? .newData : .failed)
+                
+                switch result {
+                case let .success(result):
+                    if let conditionResult = result {
+                        self.model?.update(condition: conditionResult)
+                    }
+                    
+                case let .failure(error):
+                    self.model?.dispalyError(error)
+                }
             }
-        }
+            .store(in: cancelBag)
     }
 
 //    func onTapUrlContent(id: String) {

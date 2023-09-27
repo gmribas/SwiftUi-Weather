@@ -15,6 +15,8 @@ protocol WeatherModelStatePotocol {
     var navigationTitle: String { get }
 
     var routerSubject: WeatherRouter.Subjects { get }
+    
+    func checkIfIsNightTime() -> Bool
 }
 
 // MARK: - Intent Actions

@@ -10,10 +10,10 @@ import SwiftUI
 
 struct WeatherView: View {
     
-    let dayOfWeek: String
-    let dayTextSize: CGFloat
+    let title: String
+    let titleSize: CGFloat
     let icon: String
-    let temperature: Int
+    let temperature: Double
     let temperatureSize: CGFloat
     let iconFrame: CGFloat
     var textFrameW: CGFloat? = nil
@@ -21,8 +21,8 @@ struct WeatherView: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            let text = Text(dayOfWeek)
-                .font(.system(size: dayTextSize, weight: .medium, design: .default))
+            let text = Text(title)
+                .font(.system(size: titleSize, weight: .medium, design: .default))
                 .foregroundColor(.white)
                 .padding()
             
@@ -37,7 +37,7 @@ struct WeatherView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: iconFrame, height: iconFrame)
                 
-                Text("\(temperature) °")
+                Text("\(String(format: "%.1f", temperature)) °")
                     .font(.system(size: temperatureSize, weight: .medium))
                     .foregroundColor(.white)
             }
@@ -56,10 +56,10 @@ struct WeatherView_Previews: PreviewProvider {
             .edgesIgnoringSafeArea(.all)
         
             WeatherView(
-                dayOfWeek: "FRI",
-                dayTextSize: 12,
+                title: "FRI",
+                titleSize: 12,
                 icon: "cloud.sun.rain.fill",
-                temperature: Int.random(in: 0..<80),
+                temperature: Double.random(in: 0..<80),
                 temperatureSize: 24,
                 iconFrame: 50,
                 textFrameW: 80,

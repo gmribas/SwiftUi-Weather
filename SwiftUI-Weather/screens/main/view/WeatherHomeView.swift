@@ -20,12 +20,34 @@ struct WeatherHomeView: View {
         ZStack {
             BackgroundView(isNight: $isNight)
             
+            switch state.contentState {
+            case .loading:
+                ProgressView()
+                    .scaleEffect(2.0, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.blue))
+            
+            case .content(let condition):
+                WeatherView(
+                   title: "\(condition.location.name), \(condition.location.region)",
+                   titleSize: 32,
+                   icon: WeatherIconsByCode.getIconByCode(condition.current.condition.code, forceNight: isNight),
+                   temperature: condition.current.tempC,
+                   temperatureSize: 70,
+                   iconFrame: 180,
+                   textFrameW: 250,
+                   textFrameH: 50
+               )
+            
+            case .error(let text):
+                Text(text)
+            }
+            
+                
 //            switch state.contentState {
 //            case .loading:
-//                Text("")
-////                ProgressView()
-////                    .scaleEffect(2.0, anchor: .center)
-////                    .progressViewStyle(CircularProgressViewStyle(tint: Color.blue))
+//                ProgressView()
+//                    .scaleEffect(2.0, anchor: .center)
+//                    .progressViewStyle(CircularProgressViewStyle(tint: Color.blue))
 //                
 //            case let .content(condition):
 //                isNight = !condition.current?.isDay ?? false
@@ -134,7 +156,10 @@ struct WeatherHomeView: View {
 //                Spacer()
 //            }
         }
-        .onAppear(perform: intent.viewOnAppear)
+        .onAppear {
+            isNight = container.model.checkIfIsNightTime()
+            intent.viewOnAppear()
+        }
         .modifier(WeatherRouter(subjects: state.routerSubject, intent: intent))
     }
 }

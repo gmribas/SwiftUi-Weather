@@ -14,6 +14,31 @@ final class WeatherModel: ObservableObject, WeatherModelStatePotocol {
     let loadingText = "Loading"
     let navigationTitle = "SwiftUI Videos"
     let routerSubject = WeatherRouter.Subjects()
+    
+    func checkIfIsNightTime() -> Bool {
+      let date = NSDate()
+      let calendar = NSCalendar.current
+      let currentHour = calendar.component(.hour, from: date as Date)
+      let hourInt = Int(currentHour.description)!
+      
+      let NEW_DAY = 0
+      let NOON = 12
+      let SUNSET = 18
+      let MIDNIGHT = 24
+
+      var greetingText = false
+      if hourInt >= NEW_DAY && hourInt <= NOON {
+          greetingText = false
+      }
+      else if hourInt > NOON && hourInt <= SUNSET {
+          greetingText = false
+      }
+      else if hourInt > SUNSET && hourInt <= MIDNIGHT {
+          greetingText = true
+      }
+      
+      return greetingText
+    }
 }
 
 // MARK: - Actions Protocol

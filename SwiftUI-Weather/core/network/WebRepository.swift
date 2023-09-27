@@ -30,17 +30,6 @@ extension WebRepository {
             return Fail<Value, Error>(error: error).eraseToAnyPublisher()
         }
     }
-    
-    func performAPICall() async -> Void {
-        do {
-            let url = URL(string: "https://api.weatherapi.com/v1/current.json?key=4345a3018c9d433caa8190801231609&q=Castro,PR,Brazil&aqi=yes")!
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let wrapper = try JSONDecoder().decode(CurrentConditionResponse.self, from: data)
-            print(wrapper)
-        } catch let error {
-            print("Error !!!!! \(error)")
-        }
-    }
 }
 
 // MARK: - Helpers

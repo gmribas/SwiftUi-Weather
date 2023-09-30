@@ -7,13 +7,19 @@
 
 import Foundation
 
-struct InteractorDependencyInjection {
+class InteractorDependencyInjection {
     
     func register() throws {
-        guard let repo = DependencyInjectionContainer.resolve(.automatic, CurrentWeatherRemoteRepository.self) else {
+        guard let currentWeatherRepo = DependencyInjectionContainer.resolve(.automatic, CurrentWeatherRemoteRepository.self) else {
             fatalError("No dependency of type CurrentWeatherRemoteRepository registered!")
         }
         
-        DependencyInjectionContainer.register(CurrentWeatherInteractor.self, CurrentWeatherInteractorImpl(repository: repo))
+        guard let forecastRepo = DependencyInjectionContainer.resolve(.automatic, ForecastWeatherRemoteRepository.self) else {
+            fatalError("No dependency of type ForecastWeatherRemoteRepository registered!")
+        }
+        
+        DependencyInjectionContainer.register(CurrentWeatherInteractor.self, CurrentWeatherInteractorImpl(repository: currentWeatherRepo))
+        
+        DependencyInjectionContainer.register(ForecastWeatherInteractor.self, ForecastWeatherInteractorImpl(repository: forecastRepo))
     }
 }

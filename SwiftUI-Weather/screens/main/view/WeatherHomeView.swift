@@ -26,18 +26,22 @@ struct WeatherHomeView: View {
                     .scaleEffect(2.0, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.blue))
             
-            case .content(let condition):
+            case .contentCurrentCondition(let location, let condition):
                 WeatherView(
-                   title: "\(condition.location.name), \(condition.location.region)",
+                   title: "\(location.name), \(location.region)",
                    titleSize: 32,
-                   icon: WeatherIconsByCode.getIconByCode(condition.current.condition.code, forceNight: isNight),
-                   temperature: condition.current.tempC,
+                   icon: WeatherIconsByCode.getIconByCode(condition.condition.code, forceNight: isNight),
+                   temperature: condition.tempC,
                    temperatureSize: 70,
                    iconFrame: 180,
                    textFrameW: 250,
                    textFrameH: 50
                )
             
+            case .contentForecast(let forecast):
+                Text("  ")
+//                Text("\(forecast.forecast?.forecastday?.count ?? 0)")
+                
             case .error(let text):
                 Text(text)
             }

@@ -12,7 +12,7 @@ struct Inject<T> {
     
     private var dependency: T
     
-    var wrappedValue: T {
+    private(set) public var  wrappedValue: T {
         get { return self.dependency }
         mutating set { dependency = newValue }
     }

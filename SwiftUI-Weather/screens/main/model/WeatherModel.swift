@@ -49,8 +49,12 @@ extension WeatherModel: WeatherModelActionsProtocol {
         contentState = .loading
     }
 
-    func update(condition: CurrentConditionResponse) {
-        contentState = .content(condition: condition)
+    func updateCurrentCondition(location: Location, currentCondition: CurrentCondition) {
+        contentState = .contentCurrentCondition(location: location, currentCondition: currentCondition)
+    }
+    
+    func updateForecast(forecast: ForecastResponse) {
+        contentState = .contentForecast(forecast: forecast)
     }
 
     func dispalyError(_ error: Error) {
@@ -71,7 +75,8 @@ extension WeatherModel: WeatherModelRouterProtocol {
 extension WeatherTypes.Model {
     enum ContentState {
         case loading
-        case content(condition: CurrentConditionResponse)
+        case contentCurrentCondition(location: Location, currentCondition: CurrentCondition)
+        case contentForecast(forecast: ForecastResponse)
         case error(text: String)
     }
 }

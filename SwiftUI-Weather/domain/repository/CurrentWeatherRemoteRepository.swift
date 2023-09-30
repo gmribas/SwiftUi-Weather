@@ -9,6 +9,6 @@ import Foundation
 import Combine
 
 protocol CurrentWeatherRemoteRepository: WebRepository {
-    
+        
     func getCurrentWeather(location: String) -> AnyPublisher<CurrentConditionResponse?, Error>
 }

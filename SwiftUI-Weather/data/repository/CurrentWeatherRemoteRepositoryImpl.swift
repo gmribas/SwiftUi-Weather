@@ -9,14 +9,16 @@ import Combine
 import Foundation
 
 struct CurrentWeatherRemoteRepositoryImpl: CurrentWeatherRemoteRepository {
-
-    let session: URLSession
-    let baseURL: String
-    let bgQueue = DispatchQueue(label: "bg_parse_queue")
-       
-    init(session: URLSession) {
+    
+    internal var session: URLSession
+    
+    internal var baseURL: String = Constants.WEATHER_BASE_URL
+    
+    internal var bgQueue: DispatchQueue
+    
+    init(session: URLSession, bgQueue: DispatchQueue) {
         self.session = session
-        self.baseURL = Constants.WEATHER_BASE_URL
+        self.bgQueue = bgQueue
     }
     
     func getCurrentWeather(location: String) -> AnyPublisher<CurrentConditionResponse?, Error> {
@@ -36,7 +38,7 @@ extension CurrentWeatherRemoteRepositoryImpl.API: APICall {
     var path: String {
         switch self {
         case .currentWeather(let location):
-            return Constants.CURRENT_WEATHER + "&aqi=yes&q=" + location
+            return  "\(Constants.CURRENT_WEATHER)&aqi=yes&q=\(location)"
         }
     }
     var method: String {

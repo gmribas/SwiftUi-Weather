@@ -13,9 +13,14 @@ struct WeatherHomeInjection {
         let model = WeatherModel()
         DependencyInjectionContainer.register(WeatherModel.self, model)
         
-        guard let interactor = DependencyInjectionContainer.resolve(.automatic, CurrentWeatherInteractor.self) else {
+        guard let currentWeatherInteractor = DependencyInjectionContainer.resolve(.automatic, CurrentWeatherInteractor.self) else {
             fatalError("No dependency of type CurrentWeatherInteractor registered!")
         }
-        DependencyInjectionContainer.register(WeatherIntent.self, WeatherIntent(model: model, externalData: .init(), interactor: interactor))
+        
+        guard let forecastInteractor = DependencyInjectionContainer.resolve(.automatic, ForecastWeatherInteractor.self) else {
+            fatalError("No dependency of type ForecastWeatherInteractor registered!")
+        }
+        
+        DependencyInjectionContainer.register(WeatherIntent.self, WeatherIntent(model: model, externalData: .init(), currentWeatherInteractor: currentWeatherInteractor, forecastInteractor: forecastInteractor))
     }
 }

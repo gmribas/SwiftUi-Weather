@@ -23,7 +23,8 @@ protocol WeatherModelStatePotocol {
 
 protocol WeatherModelActionsProtocol: AnyObject {
     func dispalyLoading()
-    func update(condition: CurrentConditionResponse)
+    func updateCurrentCondition(location: Location, currentCondition: CurrentCondition)
+    func updateForecast(forecast: ForecastResponse)
     func dispalyError(_ error: Error)
 }
 

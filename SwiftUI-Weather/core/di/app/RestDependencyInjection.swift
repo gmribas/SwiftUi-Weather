@@ -11,16 +11,23 @@ struct RestDependencyInjection {
     
     static func register() {
         let jsonDecoder = jsonDecoderBuilder()
+        let queue = DispatchQueue(label: "bg_parse_queue")
+        let session = configuredURLSession()
+        
         DependencyInjectionContainer.register(JSONDecoder.self, jsonDecoder)
-        DependencyInjectionContainer.register(CurrentWeatherRemoteRepository.self, CurrentWeatherRemoteRepositoryImpl(session: configuredURLSession()))
+        DependencyInjectionContainer.register(DispatchQueue.self, queue)
+        DependencyInjectionContainer.register(URLSession.self, session)
+        
+        DependencyInjectionContainer.register(CurrentWeatherRemoteRepository.self, CurrentWeatherRemoteRepositoryImpl(session: session, bgQueue: queue))
+        DependencyInjectionContainer.register(ForecastWeatherRemoteRepository.self, ForecastWeatherRemoteRepositoryImpl(session: session, bgQueue: queue))
     }
     
     private static func jsonDecoderBuilder() -> JSONDecoder {
         let diskCapacity = 60 * 1024 * 1024
         let memoryCapacity = 90 * 1024 * 1024
        
-       URLSession.shared.configuration.urlCache?.diskCapacity = diskCapacity
-       URLSession.shared.configuration.urlCache?.memoryCapacity = memoryCapacity
+        URLSession.shared.configuration.urlCache?.diskCapacity = diskCapacity
+        URLSession.shared.configuration.urlCache?.memoryCapacity = memoryCapacity
 
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase

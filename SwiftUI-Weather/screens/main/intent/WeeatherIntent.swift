@@ -16,7 +16,9 @@ struct WeatherIntent {
     
     // MARK: Interactor
 
-    private var interactor: CurrentWeatherInteractor
+    private var currentWeatherInteractor: CurrentWeatherInteractor
+    
+    private var forecastInteractor: ForecastWeatherInteractor
     
     // MARK: Business Data
 
@@ -28,11 +30,13 @@ struct WeatherIntent {
 
     init(model: WeatherModelActionsProtocol & WeatherModelRouterProtocol,
          externalData: WeatherTypes.Intent.ExternalData,
-         interactor: CurrentWeatherInteractor) {
+         currentWeatherInteractor: CurrentWeatherInteractor,
+         forecastInteractor: ForecastWeatherInteractor) {
         self.externalData = externalData
         self.model = model
         self.routeModel = model
-        self.interactor = interactor
+        self.currentWeatherInteractor = currentWeatherInteractor
+        self.forecastInteractor = forecastInteractor
     }
 }
 
@@ -44,16 +48,33 @@ extension WeatherIntent: WeatherIntentProtocol {
         model?.dispalyLoading()
         
         // FIXME: get location via GPS
-        interactor.getCurrentWeather(location: "Castro,PR,Brazil")
+        let location = "Castro,PR,Brazil"
+        
+//        currentWeatherInteractor.getCurrentWeather(location: location)
+//            .sinkToResult { result in
+//                
+//                // FIXME: define its value
+////                fetchCompletion(result.isSuccess ? .newData : .failed)
+//                
+//                switch result {
+//                case let .success(result):
+//                    if let conditionResult = result {
+//                        self.model?.updateCurrentCondition(condition: conditionResult)
+//                    }
+//                    
+//                case let .failure(error):
+//                    self.model?.dispalyError(error)
+//                }
+//            }
+//            .store(in: cancelBag)
+        
+        forecastInteractor.getForecast(location: location)
             .sinkToResult { result in
-                
-                // FIXME: define its value
-//                fetchCompletion(result.isSuccess ? .newData : .failed)
-                
                 switch result {
                 case let .success(result):
-                    if let conditionResult = result {
-                        self.model?.update(condition: conditionResult)
+                    if let forecastResult = result {
+                        self.model?.updateCurrentCondition(location: forecastResult.location, currentCondition: forecastResult.current)
+                        self.model?.updateForecast(forecast: forecastResult)
                     }
                     
                 case let .failure(error):

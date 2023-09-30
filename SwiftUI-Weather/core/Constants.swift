@@ -13,5 +13,7 @@ struct Constants {
     static let WEATHER_BASE_URL = "https://api.weatherapi.com/v1"
     static let CURRENT_WEATHER = "/current.json?key=\(Constants.WEATHER_API_KEY)"
     static let FORECAST = "/forecast.json?key=\(Constants.WEATHER_API_KEY)"
+    static let FORECAST_MAX_DAYS_FREE_PLAN = "3"
+    static let LANGUAGE_PT = "lang=pt"
 }
 

@@ -26,6 +26,8 @@ struct WeatherView: View {
                 .foregroundColor(.white)
                 .padding()
             
+            Spacer().frame(minHeight: 15)
+            
             if let w = textFrameW, let h = textFrameH {
                 text.frame(width: w, height: h)
             }
@@ -37,9 +39,10 @@ struct WeatherView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: iconFrame, height: iconFrame)
                 
-                Text("\(String(format: "%.1f", temperature)) °")
+                Text("\(String(format: "%.0f", temperature))°")
                     .font(.system(size: temperatureSize, weight: .medium))
                     .foregroundColor(.white)
+                    .lineLimit(1)
             }
         }
         .frame(width: iconFrame)

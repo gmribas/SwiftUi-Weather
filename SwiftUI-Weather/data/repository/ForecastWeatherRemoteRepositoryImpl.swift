@@ -39,7 +39,7 @@ extension ForecastWeatherRemoteRepositoryImpl.API: APICall {
     var path: String {
         switch self {
         case .forecast(let location):
-            return "\(Constants.FORECAST)&q=\(location)&days=5&alerts=yes&aqi=no"
+            return "\(Constants.FORECAST)&q=\(location)&days=\(Constants.FORECAST_MAX_DAYS_FREE_PLAN)&alerts=yes&aqi=no&\(Constants.LANGUAGE_PT)"
         }
     }
     var method: String {

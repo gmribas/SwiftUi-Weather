@@ -20,145 +20,60 @@ struct WeatherHomeView: View {
         ZStack {
             BackgroundView(isNight: $isNight)
             
-            switch state.contentState {
-            case .loading:
-                ProgressView()
-                    .scaleEffect(2.0, anchor: .center)
-                    .progressViewStyle(CircularProgressViewStyle(tint: Color.blue))
+            Spacer().frame(maxHeight: 20)
             
-            case .contentCurrentCondition(let location, let condition):
-                WeatherView(
-                   title: "\(location.name), \(location.region)",
-                   titleSize: 32,
-                   icon: WeatherIconsByCode.getIconByCode(condition.condition.code, forceNight: isNight),
-                   temperature: condition.tempC,
-                   temperatureSize: 70,
-                   iconFrame: 180,
-                   textFrameW: 250,
-                   textFrameH: 50
-               )
-            
-            case .contentForecast(let forecast):
-                Text("  ")
-//                Text("\(forecast.forecast?.forecastday?.count ?? 0)")
+            VStack {
+                switch state.contentState {
+                case .loading:
+                    ProgressView()
+                        .scaleEffect(2.0, anchor: .center)
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color.blue))
                 
-            case .error(let text):
-                Text(text)
+                case .contentForecast(let location, let condition, let forecast):
+                    WeatherView(
+                       title: "\(location.name), \(location.region)",
+                       titleSize: 32,
+                       icon: WeatherIconsByCode.getIconByCode(condition.condition.code, forceNight: isNight),
+                       temperature: condition.tempC,
+                       temperatureSize: 70,
+                       iconFrame: 150,
+                       textFrameW: 250,
+                       textFrameH: 50
+                   )
+                    
+                    ScrollView {
+                        HStack {
+                            ForEach(forecast.forecast?.forecastday ?? [Forecastday](), id: \.dateEpoch) { item in
+                                let title: String = "\(item.day?.condition.text ?? "EMPTY CONDITION")"
+                                
+                                WeatherView(
+                                   title: title.replacingOccurrences(of: " ", with: "\n"),
+                                   titleSize: 15,
+                                   icon: WeatherIconsByCode.getIconByCode(condition.condition.code, forceNight: isNight),
+                                   temperature: condition.tempC,
+                                   temperatureSize: 20,
+                                   iconFrame: 35,
+                                   textFrameW: 150,
+                                   textFrameH: 25
+                               )
+                                
+                                Spacer().frame(maxWidth: 62)
+                            }
+                        }
+                        .frame(
+                            maxWidth: .infinity,
+                            alignment: .center
+                        )
+                    }
+                    
+                case .error(let text):
+                    Text(text)
+                }
             }
-            
-                
-//            switch state.contentState {
-//            case .loading:
-//                ProgressView()
-//                    .scaleEffect(2.0, anchor: .center)
-//                    .progressViewStyle(CircularProgressViewStyle(tint: Color.blue))
-//                
-//            case let .content(condition):
-//                isNight = !condition.current?.isDay ?? false
-//                Text("")
-////                WeatherView(
-////                    dayOfWeek: condition.location.name,
-////                    dayTextSize: 32,
-////                    icon: isNight ? "moon.stars.fill" : "cloud.sun.fill",
-////                    temperature: condition.current.tempC,
-////                    temperatureSize: 70,
-////                    iconFrame: 180,
-////                    textFrameW: 250,
-////                    textFrameH: 50
-////                )
-//                
-//            case let .error(text):
-//                Text(text)
-//            }
-            
-//            VStack {
-//                WeatherView(
-//                    dayOfWeek: "Cupertino, CA",
-//                    dayTextSize: 32,
-//                    icon: isNight ? "moon.stars.fill" : "cloud.sun.fill",
-//                    temperature: 76,
-//                    temperatureSize: 70,
-//                    iconFrame: 180,
-//                    textFrameW: 250,
-//                    textFrameH: 50
-//                )
-//                
-//                
-//                let weatherIconList: [String] = ["cloud.sun.rain.fill", "wind", "cloud.moon.rain.fill", "cloud.moon.bolt.fill", "smoke.fill"]
-//                
-//                let weatherList: [WeatherView] = [
-//                    WeatherView(
-//                        dayOfWeek: "MON",
-//                        dayTextSize: 14,
-//                        icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],
-//                        temperature: Int.random(in: 0..<80),
-//                        temperatureSize: 24,
-//                        iconFrame: 50,
-//                        textFrameW: 80,
-//                        textFrameH: 50
-//                    ),
-//
-//                    WeatherView(
-//                        dayOfWeek: "TUE",
-//                        dayTextSize: 12,
-//                        icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],
-//                        temperature: Int.random(in: 0..<80),
-//                        temperatureSize: 24,
-//                        iconFrame: 50,
-//                        textFrameW: 80,
-//                        textFrameH: 50
-//                    ),
-//
-//                    WeatherView(
-//                        dayOfWeek: "WED",
-//                        dayTextSize: 12,
-//                        icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],
-//                        temperature: Int.random(in: 0..<80),
-//                        temperatureSize: 24,
-//                        iconFrame: 50,
-//                        textFrameW: 80,
-//                        textFrameH: 50
-//                    ),
-//
-//                    WeatherView(
-//                        dayOfWeek: "THR",
-//                        dayTextSize: 12,
-//                        icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],
-//                        temperature: Int.random(in: 0..<80),
-//                        temperatureSize: 24,
-//                        iconFrame: 50,
-//                        textFrameW: 80,
-//                        textFrameH: 50
-//                    ),
-//
-//                    WeatherView(
-//                        dayOfWeek: "FRI",
-//                        dayTextSize: 12,
-//                        icon: weatherIconList[Int.random(in: 0..<weatherIconList.count)],
-//                        temperature: Int.random(in: 0..<80),
-//                        temperatureSize: 24,
-//                        iconFrame: 50,
-//                        textFrameW: 80,
-//                        textFrameH: 50
-//                    )
-//                ]
-//
-//                HStack(spacing: 10) {
-//                    ForEach(weatherList, id: \.dayOfWeek.hashValue) { item in
-//                        item
-//                    }
-//                }
-//                
-//                Spacer()
-//                
-//                Button {
-//                    isNight.toggle()
-//                } label: {
-//                    WeatherButton(text: "Change day time", textColor: Color.blue, backgroundColor: Color.white)
-//                }
-//
-//                Spacer()
-//            }
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity
+            )
         }
         .onAppear {
             isNight = container.model.checkIfIsNightTime()
@@ -171,7 +86,7 @@ struct WeatherHomeView: View {
 #if DEBUG
 //struct ContentView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        WeatherHomeView(container: MVIContainer<WeatherIntentProtocol, WeatherModelStatePotocol>())
+//        WeatherHomeView(container: MVIContainer<WeatherIntentProtocol, WeatherModelStatePotocol>(intent: <#WeatherIntentProtocol#>(), model: <#WeatherModelStatePotocol#>(), modelChangePublisher: <#ObservableObjectPublisher#>()))
 //    }
 //}
 #endif

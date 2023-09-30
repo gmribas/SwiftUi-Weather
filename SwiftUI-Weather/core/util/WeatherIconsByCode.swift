@@ -25,7 +25,13 @@ struct WeatherIconsByCode {
             value = getNightIconCode(code)
         }
         
-        return value ?? "exclamationmark.octagon.fill" //an ellegant way to show that the current icon has not been found ;)
+        let result = value ?? "exclamationmark.octagon.fill" //an ellegant way to show that the current icon has not been found ;)
+        
+        if (result == "exclamationmark.octagon.fill") {
+            print("Weather code not found \(code)")
+        }
+        
+        return result
     }
     
     private static func getDayIconByCode(_ code: Int) -> String? {
@@ -41,7 +47,10 @@ struct WeatherIconsByCode {
         case 1135, 1147: "cloud.fog.fill"
         case 1150, 1153, 1168: "sun.dust.fill"
         case 1171: "sun.snow.fill"
-        case 1180, 1183, 1186: "cloud.sun.rain.fill"
+        case 1180, 1183, 1186, 1189: "cloud.sun.rain.fill"
+        case 1192, 1195: "cloud.heavyrain.fill"
+        case 1198: "sun.snow.fill"
+        case 1240: "cloud.sun.rain.fill"
         default: nil
         }
     }
@@ -59,7 +68,9 @@ struct WeatherIconsByCode {
         case 1135, 1147: getNightIconCode(248)
         case 1150, 1153, 1168: getNightIconCode(263)
         case 1171: getNightIconCode(284)
-        case 1180, 1183, 1186: getNightIconCode(293)
+        case 1180, 1183, 1186, 1189: getNightIconCode(293)
+        case 1192, 1195: getNightIconCode(305)
+        case 1240: getNightIconCode(353)
         default: nil
         }
     }
@@ -77,7 +88,10 @@ struct WeatherIconsByCode {
         case 248, 260: "cloud.fog.fill"
         case 263, 266, 281: "moon.dust.fill"
         case 284: "cloud.snow.fill"
-        case 293, 296, 299: "cloud.moon.rain.fill"
+        case 293, 296, 299, 302: "cloud.moon.rain.fill"
+        case 305, 308: "cloud.heavyrain"
+        case 311: "cloud.snow.fill"
+        case 353: "cloud.moon.rain.fill"
         default: nil
         }
     }
@@ -107,10 +121,10 @@ struct WeatherIconsByCode {
  X 1180,"Patchy light rain","Patchy light rain",293
  X 1183,"Light rain","Light rain",296
  X 1186,"Moderate rain at times","Moderate rain at times",299
- 1189,"Moderate rain","Moderate rain",302
- 1192,"Heavy rain at times","Heavy rain at times",305
- 1195,"Heavy rain","Heavy rain",308
- 1198,"Light freezing rain","Light freezing rain",311
+ X1189,"Moderate rain","Moderate rain",302
+ X1192,"Heavy rain at times","Heavy rain at times",305
+ X1195,"Heavy rain","Heavy rain",308
+ X 1198,"Light freezing rain","Light freezing rain",311
  1201,"Moderate or heavy freezing rain","Moderate or heavy freezing rain",314
  1204,"Light sleet","Light sleet",317
  1207,"Moderate or heavy sleet","Moderate or heavy sleet",320
@@ -121,7 +135,7 @@ struct WeatherIconsByCode {
  1222,"Patchy heavy snow","Patchy heavy snow",335
  1225,"Heavy snow","Heavy snow",338
  1237,"Ice pellets","Ice pellets",350
- 1240,"Light rain shower","Light rain shower",353
+ X 1240,"Light rain shower","Light rain shower",353
  1243,"Moderate or heavy rain shower","Moderate or heavy rain shower",356
  1246,"Torrential rain shower","Torrential rain shower",359
  1249,"Light sleet showers","Light sleet showers",362

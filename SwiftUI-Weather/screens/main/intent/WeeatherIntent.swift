@@ -73,8 +73,7 @@ extension WeatherIntent: WeatherIntentProtocol {
                 switch result {
                 case let .success(result):
                     if let forecastResult = result {
-                        self.model?.updateCurrentCondition(location: forecastResult.location, currentCondition: forecastResult.current)
-                        self.model?.updateForecast(forecast: forecastResult)
+                        self.model?.updateForecast(location: forecastResult.location, currentCondition: forecastResult.current, forecast: forecastResult)
                     }
                     
                 case let .failure(error):

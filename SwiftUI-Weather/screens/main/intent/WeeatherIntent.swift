@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct WeatherIntent {
 
@@ -13,6 +14,15 @@ struct WeatherIntent {
 
     private weak var model: WeatherModelActionsProtocol?
     private weak var routeModel: WeatherModelRouterProtocol?
+    
+    // MARK: Location
+    
+    @StateObject var deviceLocationService = DeviceLocationService.shared
+    
+//    @State var tokens: Set<AnyCancellable> = []
+    
+    @State var coordinates: (lat: Double, lon: Double) = (0, 0)
+    
     
     // MARK: Interactor
 
@@ -43,31 +53,26 @@ struct WeatherIntent {
 // MARK: - Public
 
 extension WeatherIntent: WeatherIntentProtocol {
-
+    
     func viewOnAppear() {
         model?.dispalyLoading()
         
+        requestLocationUpdates()
+        
+        observeCoordinateUpdates()
+        
+        observeDeniedLocationAccess()
+        
         // FIXME: get location via GPS
         let location = "Castro,PR,Brazil"
-        
-//        currentWeatherInteractor.getCurrentWeather(location: location)
-//            .sinkToResult { result in
-//                
-//                // FIXME: define its value
-////                fetchCompletion(result.isSuccess ? .newData : .failed)
-//                
-//                switch result {
-//                case let .success(result):
-//                    if let conditionResult = result {
-//                        self.model?.updateCurrentCondition(condition: conditionResult)
-//                    }
-//                    
-//                case let .failure(error):
-//                    self.model?.dispalyError(error)
-//                }
-//            }
-//            .store(in: cancelBag)
-        
+    }
+
+//    func onTapUrlContent(id: String) {
+//        guard let content = contents.first(where: { $0.id == id }) else { return }
+//        routeModel?.routeToVideoPlayer(content: content)
+//    }
+    
+    private func invokeForecast(location: String) {
         forecastInteractor.getForecast(location: location)
             .sinkToResult { result in
                 switch result {
@@ -82,11 +87,36 @@ extension WeatherIntent: WeatherIntentProtocol {
             }
             .store(in: cancelBag)
     }
+    
+    func observeCoordinateUpdates() {
+        deviceLocationService.coordinatesPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                print("Handle \(completion) for error and finished subscription.")
+                model?.dispalyErrorAlert("Coordinates Publisher", "Handle \(completion) for error and finished subscription.")
+            } receiveValue: { coordinates in
+                self.coordinates = (coordinates.latitude, coordinates.longitude)
+            }
+            .store(in: cancelBag)
+    }
 
-//    func onTapUrlContent(id: String) {
-//        guard let content = contents.first(where: { $0.id == id }) else { return }
-//        routeModel?.routeToVideoPlayer(content: content)
-//    }
+    func observeDeniedLocationAccess() {
+        deviceLocationService.deniedLocationAccessPublisher
+            .receive(on: DispatchQueue.main)
+            .sink {
+                print("Handle access denied event, possibly with an alert.")
+                model?.dispalyErrorAlert("Location Update", "Location Access Denied")
+            }
+            .store(in: cancelBag)
+    }
+    
+    func requestLocationUpdates() {
+        deviceLocationService.requestLocationUpdates()
+    }
+    
+    func dispalyLocationDenied() {
+        model?.dispalyLocationDenied()
+    }
 }
 
 // MARK: - Helper classes

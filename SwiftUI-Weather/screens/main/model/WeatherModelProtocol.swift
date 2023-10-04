@@ -25,6 +25,8 @@ protocol WeatherModelActionsProtocol: AnyObject {
     func dispalyLoading()
     func updateForecast(location: Location, currentCondition: CurrentCondition, forecast: ForecastResponse)
     func dispalyError(_ error: Error)
+    func dispalyErrorAlert(_ title: String, _ message: String)
+    func dispalyLocationDenied()
 }
 
 

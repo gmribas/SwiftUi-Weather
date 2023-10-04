@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 final class WeatherModel: ObservableObject, WeatherModelStatePotocol {
 
@@ -56,6 +57,14 @@ extension WeatherModel: WeatherModelActionsProtocol {
     func dispalyError(_ error: Error) {
         contentState = .error(text: "Fail")
     }
+    
+    func dispalyLocationDenied() {
+        contentState = .errorAlert("Location Update", "Location has been denied")
+    }
+    
+    func dispalyErrorAlert(_ title: String, _ message: String) {
+        contentState = .errorAlert(title, message)
+    }
 }
 
 // MARK: - Route Protocol
@@ -73,5 +82,6 @@ extension WeatherTypes.Model {
         case loading
         case contentForecast(location: Location, currentCondition: CurrentCondition, forecast: ForecastResponse)
         case error(text: String)
+        case errorAlert(_ title: String, _ message: String)
     }
 }

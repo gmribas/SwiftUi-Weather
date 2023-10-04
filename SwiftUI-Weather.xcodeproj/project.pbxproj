@@ -44,6 +44,7 @@
 		5346E21D2AB7B67B000441A5 /* WeeatherIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5346E21C2AB7B67B000441A5 /* WeeatherIntent.swift */; };
 		5365DA512ABA80D900CC05A5 /* WeatherHomeInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5365DA502ABA80D900CC05A5 /* WeatherHomeInjection.swift */; };
 		536B243A2AC0C01000C5F503 /* WeatherIconsByCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536B24392AC0C01000C5F503 /* WeatherIconsByCode.swift */; };
+		53B04C902ACCC8B300A8791C /* DeviceLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B04C8F2ACCC8B300A8791C /* DeviceLocationService.swift */; };
 		53B8A3562AB8FA2900658175 /* CurrentWeatherRemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B8A3552AB8FA2900658175 /* CurrentWeatherRemoteRepository.swift */; };
 		53B8A3582AB8FB0C00658175 /* CurrentWeatherRemoteRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B8A3572AB8FB0C00658175 /* CurrentWeatherRemoteRepositoryImpl.swift */; };
 		53B8A35A2AB8FD7200658175 /* WebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B8A3592AB8FD7200658175 /* WebRepository.swift */; };
@@ -129,6 +130,8 @@
 		5346E21C2AB7B67B000441A5 /* WeeatherIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeatherIntent.swift; sourceTree = "<group>"; };
 		5365DA502ABA80D900CC05A5 /* WeatherHomeInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherHomeInjection.swift; sourceTree = "<group>"; };
 		536B24392AC0C01000C5F503 /* WeatherIconsByCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconsByCode.swift; sourceTree = "<group>"; };
+		53B04C8F2ACCC8B300A8791C /* DeviceLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLocationService.swift; sourceTree = "<group>"; };
+		53B04C912ACCCAB900A8791C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		53B8A3552AB8FA2900658175 /* CurrentWeatherRemoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherRemoteRepository.swift; sourceTree = "<group>"; };
 		53B8A3572AB8FB0C00658175 /* CurrentWeatherRemoteRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherRemoteRepositoryImpl.swift; sourceTree = "<group>"; };
 		53B8A3592AB8FD7200658175 /* WebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRepository.swift; sourceTree = "<group>"; };
@@ -205,6 +208,7 @@
 		53300FFB2AB4C8FF006A1D6B /* SwiftUI-Weather */ = {
 			isa = PBXGroup;
 			children = (
+				53B04C912ACCCAB900A8791C /* Info.plist */,
 				5346E1F92AB7A7ED000441A5 /* screens */,
 				5340E9822AB5F59800D72D91 /* core */,
 				5340E97D2AB5F4A500D72D91 /* domain */,
@@ -273,6 +277,7 @@
 		5340E9822AB5F59800D72D91 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				53B04C8E2ACCC8A800A8791C /* location */,
 				53B8A3672AB904F300658175 /* bootstrap */,
 				53B8A35F2AB8FE6500658175 /* util */,
 				5346E1FD2AB7AA83000441A5 /* router */,
@@ -425,6 +430,14 @@
 				5365DA502ABA80D900CC05A5 /* WeatherHomeInjection.swift */,
 			);
 			path = di;
+			sourceTree = "<group>";
+		};
+		53B04C8E2ACCC8A800A8791C /* location */ = {
+			isa = PBXGroup;
+			children = (
+				53B04C8F2ACCC8B300A8791C /* DeviceLocationService.swift */,
+			);
+			path = location;
 			sourceTree = "<group>";
 		};
 		53B8A34F2AB8A2B000658175 /* main */ = {
@@ -629,6 +642,7 @@
 				53B8A36B2AB9087900658175 /* InteractorDependencyInjection.swift in Sources */,
 				53BA42432AB52B6800F71EFC /* WeatherButton.swift in Sources */,
 				53D950402AC6420B0042C658 /* ForecastWeatherRemoteRepositoryImpl.swift in Sources */,
+				53B04C902ACCC8B300A8791C /* DeviceLocationService.swift in Sources */,
 				53B8A36F2AB92F4500658175 /* Helpers.swift in Sources */,
 				53D950342AC639750042C658 /* WindDir.swift in Sources */,
 				5346E2012AB7AB1C000441A5 /* WeatherRouter.swift in Sources */,
@@ -820,6 +834,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SwiftUI-Weather/Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -838,7 +853,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gmribas.SwiftUI-Weather";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -858,6 +874,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SwiftUI-Weather/Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -876,7 +893,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gmribas.SwiftUI-Weather";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -943,7 +961,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gmribas.SwiftUI-WeatherUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -965,7 +984,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gmribas.SwiftUI-WeatherUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

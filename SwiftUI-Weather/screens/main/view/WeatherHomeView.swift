@@ -11,6 +11,8 @@ struct WeatherHomeView: View {
     
     @State private var isNight = false
     
+    @State private var errorAlert = false
+    
     @StateObject var container: MVIContainer<WeatherIntentProtocol, WeatherModelStatePotocol>
 
     private var intent: WeatherIntentProtocol { container.intent }
@@ -68,6 +70,16 @@ struct WeatherHomeView: View {
                     
                 case .error(let text):
                     Text(text)
+                case .errorAlert(let title, let message):
+                    Spacer()
+                        .alert(isPresented: $errorAlert, content: {
+                            Alert(
+                                title: Text(title),
+                                message: Text(message),
+                                dismissButton: .default(Text("OK"), action: { errorAlert = false })
+                            )
+                        })
+                        .onAppear { errorAlert = true }
                 }
             }
             .frame(

@@ -7,4 +7,8 @@
 
 protocol WeatherIntentProtocol {
     func viewOnAppear()
+    func dispalyLocationDenied()
+    func observeDeniedLocationAccess()
+    func observeCoordinateUpdates()
+    func requestLocationUpdates()
 }

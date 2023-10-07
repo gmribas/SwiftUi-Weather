@@ -20,11 +20,11 @@ struct WeatherRouter: RouterProtocol {
 
 extension WeatherRouter {
     enum ScreenType: RouterScreenProtocol {
-        case showWeather(condition: CurrentConditionResponse)
+        case showHomeWeather
 
         var routeType: RouterScreenPresentationType {
             switch self {
-            case .showWeather:
+            case .showHomeWeather:
                 return .navigationLink
             }
         }
@@ -33,10 +33,8 @@ extension WeatherRouter {
     @ViewBuilder
     func makeScreen(type: RouterScreenType) -> some View {
         switch type {
-        case let .showWeather(condition: CurrentConditionResponse):
+        case .showHomeWeather:
             WeatherHomeView.build()
-            // MARK: fixme
-//            ItemView.build(data: .init(title: title, url: url))
         }
     }
 

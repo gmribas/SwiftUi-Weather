@@ -9,36 +9,23 @@ import SwiftUI
 import Combine
 
 final class WeatherModel: ObservableObject, WeatherModelStatePotocol {
-
     @Published var contentState: WeatherTypes.Model.ContentState = .loading
-
     let loadingText = "Loading"
     let navigationTitle = "SwiftUI Videos"
     let routerSubject = WeatherRouter.Subjects()
-    
-    func checkIfIsNightTime() -> Bool {
-      let date = NSDate()
-      let calendar = NSCalendar.current
-      let currentHour = calendar.component(.hour, from: date as Date)
-      let hourInt = Int(currentHour.description)!
-      
-      let NEW_DAY = 0
-      let NOON = 12
-      let SUNSET = 18
-      let MIDNIGHT = 24
+}
 
-      var greetingText = false
-      if hourInt >= NEW_DAY && hourInt <= NOON {
-          greetingText = false
-      }
-      else if hourInt > NOON && hourInt <= SUNSET {
-          greetingText = false
-      }
-      else if hourInt > SUNSET && hourInt <= MIDNIGHT {
-          greetingText = true
-      }
-      
-      return greetingText
+final class IsNightChecker: ObservableObject {
+    @Published var isNight = false
+    
+    private func update(_ isNightTime: Bool) {
+        isNight = isNightTime
+        self.objectWillChange.send()
+    }
+    
+    func checkIfIsNightTime(forecast: ForecastResponse) {
+        print(" Forecast is day => \(forecast.current.isDay)")
+        update(forecast.current.isDay == 0)
     }
 }
 
@@ -51,7 +38,7 @@ extension WeatherModel: WeatherModelActionsProtocol {
     }
     
     func updateForecast(location: Location, currentCondition: CurrentCondition, forecast: ForecastResponse) {
-        contentState = .contentForecast(location: location, currentCondition: currentCondition, forecast: forecast)
+        contentState = .contentForecast(location: location, currentCondition: currentCondition, forecastResponse: forecast)
     }
 
     func dispalyError(_ error: Error) {
@@ -80,7 +67,7 @@ extension WeatherModel: WeatherModelRouterProtocol {
 extension WeatherTypes.Model {
     enum ContentState {
         case loading
-        case contentForecast(location: Location, currentCondition: CurrentCondition, forecast: ForecastResponse)
+        case contentForecast(location: Location, currentCondition: CurrentCondition, forecastResponse: ForecastResponse)
         case error(text: String)
         case errorAlert(_ title: String, _ message: String)
     }

@@ -10,7 +10,7 @@ import Foundation
 struct Location: Codable {
     let name, region, country: String
     let lat: Double
-    let lon: Int
+    let lon: Double
     let tzID: String
     let localtimeEpoch: Int
     let localtime: String

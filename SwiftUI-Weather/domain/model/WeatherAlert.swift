@@ -11,6 +11,6 @@ struct WeatherAlert: Codable {
     let headline, msgtype, severity, urgency: String
     let areas, category, certainty, event: String
     let note: String
-    let effective, expires: Date
+    let effective, expires: String //avoiding the pain for now
     let desc, instruction: String
 }

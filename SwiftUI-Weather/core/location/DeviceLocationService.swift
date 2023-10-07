@@ -16,6 +16,7 @@ class DeviceLocationService: NSObject, CLLocationManagerDelegate, ObservableObje
     private override init() {
         super.init()
     }
+    
     static let shared = DeviceLocationService()
 
     private lazy var locationManager: CLLocationManager = {
@@ -38,7 +39,12 @@ class DeviceLocationService: NSObject, CLLocationManagerDelegate, ObservableObje
             deniedLocationAccessPublisher.send()
         }
     }
+    
+    func stopLocationUpdates() {
+        locationManager.stopUpdatingLocation()
+    }
 
+    //Overrides CLLocationManagerDelegate
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
             
@@ -51,11 +57,13 @@ class DeviceLocationService: NSObject, CLLocationManagerDelegate, ObservableObje
         }
     }
 
+    //Overrides CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         coordinatesPublisher.send(location.coordinate)
     }
     
+    //Overrides CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         coordinatesPublisher.send(completion: .failure(error))
     }

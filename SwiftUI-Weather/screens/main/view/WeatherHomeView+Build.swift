@@ -23,7 +23,7 @@ extension WeatherHomeView {
             model: model as WeatherModelStatePotocol,
             modelChangePublisher: model.objectWillChange)
         
-        let view = WeatherHomeView(container: container)
+        let view = WeatherHomeView(container: container, isNightChecker: IsNightChecker())
         
         return view
     }

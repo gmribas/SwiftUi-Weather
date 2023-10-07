@@ -9,5 +9,5 @@ struct ForecastResponse: Codable {
     let location: Location
     let current: CurrentCondition
     let forecast: Forecast?
-    let alerts: WeatherAlerts
+    let alerts: WeatherAlerts?
 }

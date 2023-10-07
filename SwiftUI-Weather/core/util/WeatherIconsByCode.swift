@@ -10,10 +10,10 @@ import SwiftUI
 
 struct WeatherIconsByCode {
     
-    static func getIconByCode(_ code: Int, forceNight: Bool = false) -> String {
+    static func getIconByCode(_ code: Int, forceNight: Binding<Bool>) -> String {
         var value: String? = nil
         
-        if forceNight {
+        if forceNight.wrappedValue {
             value = getNightIconByItsDayCode(code)
         }
         
@@ -43,6 +43,7 @@ struct WeatherIconsByCode {
         case 1063: "sun.rain.fill"
         case 1066: "sun.snow.fill"
         case 1069, 1072: "cloud.sleet.fill"
+        case 1087: "cloud.sun.bolt.fill"
         case 1114, 1117: "sun.snow.fill"
         case 1135, 1147: "cloud.fog.fill"
         case 1150, 1153, 1168: "sun.dust.fill"
@@ -64,6 +65,7 @@ struct WeatherIconsByCode {
         case 1063: getNightIconCode(176)
         case 1066: getNightIconCode(179)
         case 1069, 1072: getNightIconCode(182)
+        case 1087: getNightIconCode(200)
         case 1114, 1117: getNightIconCode(227)
         case 1135, 1147: getNightIconCode(248)
         case 1150, 1153, 1168: getNightIconCode(263)
@@ -84,6 +86,7 @@ struct WeatherIconsByCode {
         case 176: "cloud.drizzle.fill"
         case 179: "cloud.snow.fill"
         case 182, 185: "cloud.sleet.fill"
+        case 200: "cloud.moon.bolt.fill"
         case 227, 230: "cloud.snow.fill"
         case 248, 260: "cloud.fog.fill"
         case 263, 266, 281: "moon.dust.fill"
@@ -109,7 +112,7 @@ struct WeatherIconsByCode {
  X 1066,"Patchy snow possible","Patchy snow possible",179
  X 1069,"Patchy sleet possible","Patchy sleet possible",182
  X 1072,"Patchy freezing drizzle possible","Patchy freezing drizzle possible",185
- 1087,"Thundery outbreaks possible","Thundery outbreaks possible",200
+ X 1087,"Thundery outbreaks possible","Thundery outbreaks possible",200
  X 1114,"Blowing snow","Blowing snow",227
  X 1117,Blizzard,Blizzard,230
  X 1135,Fog,Fog,248

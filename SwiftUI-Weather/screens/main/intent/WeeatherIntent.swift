@@ -7,22 +7,15 @@
 
 import SwiftUI
 import Combine
+import CoreLocation
 
 struct WeatherIntent {
 
     // MARK: Model
 
     private weak var model: WeatherModelActionsProtocol?
+    
     private weak var routeModel: WeatherModelRouterProtocol?
-    
-    // MARK: Location
-    
-    @StateObject var deviceLocationService = DeviceLocationService.shared
-    
-//    @State var tokens: Set<AnyCancellable> = []
-    
-    @State var coordinates: (lat: Double, lon: Double) = (0, 0)
-    
     
     // MARK: Interactor
 
@@ -37,6 +30,8 @@ struct WeatherIntent {
     private let cancelBag = CancelBag()
     
     // MARK: Life cycle
+    
+    var isNightChecker = IsNightChecker()
 
     init(model: WeatherModelActionsProtocol & WeatherModelRouterProtocol,
          externalData: WeatherTypes.Intent.ExternalData,
@@ -57,14 +52,11 @@ extension WeatherIntent: WeatherIntentProtocol {
     func viewOnAppear() {
         model?.dispalyLoading()
         
-        requestLocationUpdates()
-        
         observeCoordinateUpdates()
         
         observeDeniedLocationAccess()
         
-        // FIXME: get location via GPS
-        let location = "Castro,PR,Brazil"
+        requestLocationUpdates()
     }
 
 //    func onTapUrlContent(id: String) {
@@ -78,6 +70,8 @@ extension WeatherIntent: WeatherIntentProtocol {
                 switch result {
                 case let .success(result):
                     if let forecastResult = result {
+                        DeviceLocationService.shared.stopLocationUpdates()
+                        isNightChecker.checkIfIsNightTime(forecast: forecastResult)
                         self.model?.updateForecast(location: forecastResult.location, currentCondition: forecastResult.current, forecast: forecastResult)
                     }
                     
@@ -89,19 +83,32 @@ extension WeatherIntent: WeatherIntentProtocol {
     }
     
     func observeCoordinateUpdates() {
-        deviceLocationService.coordinatesPublisher
+        DeviceLocationService.shared.coordinatesPublisher
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 print("Handle \(completion) for error and finished subscription.")
+                
                 model?.dispalyErrorAlert("Coordinates Publisher", "Handle \(completion) for error and finished subscription.")
             } receiveValue: { coordinates in
-                self.coordinates = (coordinates.latitude, coordinates.longitude)
+                print("COORDINATES \(coordinates)")
+                
+                let lat = coordinates.latitude
+                let lon = coordinates.longitude
+                
+                if (lat != 0.0 && lon != 0.0) {
+                    guard let location = "\(lat),\(lon)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+                        model?.dispalyErrorAlert("Coordinates Publisher", "Encoding coordinates \(coordinates) got south!")
+                        return
+                    }
+                    
+                    invokeForecast(location: location)
+                }
             }
             .store(in: cancelBag)
     }
 
     func observeDeniedLocationAccess() {
-        deviceLocationService.deniedLocationAccessPublisher
+        DeviceLocationService.shared.deniedLocationAccessPublisher
             .receive(on: DispatchQueue.main)
             .sink {
                 print("Handle access denied event, possibly with an alert.")
@@ -111,7 +118,7 @@ extension WeatherIntent: WeatherIntentProtocol {
     }
     
     func requestLocationUpdates() {
-        deviceLocationService.requestLocationUpdates()
+        DeviceLocationService.shared.requestLocationUpdates()
     }
     
     func dispalyLocationDenied() {

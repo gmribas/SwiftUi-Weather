@@ -8,21 +8,22 @@
 import SwiftUI
 
 struct WeatherHomeView: View {
+        
+    @State internal var errorAlert = false
     
-    @State private var isNight = false
+    @StateObject internal var container: MVIContainer<WeatherIntentProtocol, WeatherModelStatePotocol>
     
-    @State private var errorAlert = false
+    @ObservedObject internal var isNightChecker: IsNightChecker
     
-    @StateObject var container: MVIContainer<WeatherIntentProtocol, WeatherModelStatePotocol>
-
     private var intent: WeatherIntentProtocol { container.intent }
+    
     private var state: WeatherModelStatePotocol { container.model }
     
     var body: some View {
         ZStack {
-            BackgroundView(isNight: $isNight)
+            BackgroundView(isNight: $isNightChecker.isNight)
             
-            Spacer().frame(maxHeight: 20)
+//            Spacer().frame(maxHeight: 40)
             
             VStack {
                 switch state.contentState {
@@ -31,55 +32,43 @@ struct WeatherHomeView: View {
                         .scaleEffect(2.0, anchor: .center)
                         .progressViewStyle(CircularProgressViewStyle(tint: Color.blue))
                 
-                case .contentForecast(let location, let condition, let forecast):
+                case .contentForecast(let location, let condition, let forecastResponse):
                     WeatherView(
-                       title: "\(location.name), \(location.region)",
+                       title: "\(location.name)",
                        titleSize: 32,
-                       icon: WeatherIconsByCode.getIconByCode(condition.condition.code, forceNight: isNight),
+                       icon: WeatherIconsByCode.getIconByCode(condition.condition.code, forceNight: $isNightChecker.isNight),
                        temperature: condition.tempC,
+                       feelsLike: condition.feelslikeC,
                        temperatureSize: 70,
+                       feelsLikeSize: 20,
                        iconFrame: 150,
                        textFrameW: 250,
                        textFrameH: 50
                    )
                     
-                    ScrollView {
-                        HStack {
-                            ForEach(forecast.forecast?.forecastday ?? [Forecastday](), id: \.dateEpoch) { item in
-                                let title: String = "\(item.day?.condition.text ?? "EMPTY CONDITION")"
-                                
+                    HStack(alignment: .top, spacing: 15) {
+                        ScrollView(.horizontal) {
+                            ForEach(forecastResponse.forecast?.forecastday?.first?.hour ?? [Hour](), id: \.timeEpoch) { item in
                                 WeatherView(
-                                   title: title.replacingOccurrences(of: " ", with: "\n"),
-                                   titleSize: 15,
-                                   icon: WeatherIconsByCode.getIconByCode(condition.condition.code, forceNight: isNight),
-                                   temperature: condition.tempC,
-                                   temperatureSize: 20,
-                                   iconFrame: 35,
-                                   textFrameW: 150,
-                                   textFrameH: 25
-                               )
-                                
-                                Spacer().frame(maxWidth: 62)
+                                    title: item.time,
+                                    titleSize: 12,
+                                    icon: WeatherIconsByCode.getIconByCode(item.condition.code, forceNight: $isNightChecker.isNight),
+                                    temperature: item.tempC,
+                                    feelsLike: item.feelslikeC,
+                                    temperatureSize: 20,
+                                    feelsLikeSize: 20,
+                                    iconFrame: 50)
                             }
                         }
-                        .frame(
-                            maxWidth: .infinity,
-                            alignment: .center
-                        )
+//                        .frame(maxWidth: .infinity)
+                        .background(Color.gray)
                     }
-                    
+//                    .frame(maxWidth: .infinity)
+
                 case .error(let text):
                     Text(text)
                 case .errorAlert(let title, let message):
-                    Spacer()
-                        .alert(isPresented: $errorAlert, content: {
-                            Alert(
-                                title: Text(title),
-                                message: Text(message),
-                                dismissButton: .default(Text("OK"), action: { errorAlert = false })
-                            )
-                        })
-                        .onAppear { errorAlert = true }
+                    LocationAlertView(errorAlert: $errorAlert, title: title, message: message)
                 }
             }
             .frame(
@@ -88,7 +77,6 @@ struct WeatherHomeView: View {
             )
         }
         .onAppear {
-            isNight = container.model.checkIfIsNightTime()
             intent.viewOnAppear()
         }
         .modifier(WeatherRouter(subjects: state.routerSubject, intent: intent))

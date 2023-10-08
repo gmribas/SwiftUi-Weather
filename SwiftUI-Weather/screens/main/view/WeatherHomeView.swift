@@ -46,8 +46,8 @@ struct WeatherHomeView: View {
                        textFrameH: 50
                    )
                     
-                    HStack(alignment: .top, spacing: 15) {
-                        ScrollView(.horizontal) {
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 15) {
                             ForEach(forecastResponse.forecast?.forecastday?.first?.hour ?? [Hour](), id: \.timeEpoch) { item in
                                 WeatherView(
                                     title: item.time,
@@ -60,10 +60,9 @@ struct WeatherHomeView: View {
                                     iconFrame: 50)
                             }
                         }
-//                        .frame(maxWidth: .infinity)
-                        .background(Color.gray)
+                        .background(Color.red)
                     }
-//                    .frame(maxWidth: .infinity)
+                    .background(Color.gray)
 
                 case .error(let text):
                     Text(text)

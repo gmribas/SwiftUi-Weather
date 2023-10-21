@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import OSLog
 
 struct WeatherIconsByCode {
     
@@ -28,7 +29,7 @@ struct WeatherIconsByCode {
         let result = value ?? "exclamationmark.octagon.fill" //an ellegant way to show that the current icon has not been found ;)
         
         if (result == "exclamationmark.octagon.fill") {
-            print("Weather code not found \(code)")
+            Logger.statistics.error("Weather code not found \(code)")
         }
         
         return result

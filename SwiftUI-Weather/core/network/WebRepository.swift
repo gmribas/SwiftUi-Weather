@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import OSLog
 
 protocol WebRepository {
     var session: URLSession { get }
@@ -18,7 +19,7 @@ extension WebRepository {
     func call<Value>(endpoint: APICall, httpCodes: HTTPCodes = .success) -> AnyPublisher<Value, Error>
         where Value: Codable {
         do {
-            print("WebRepository Request \(endpoint.method) \(endpoint.path)")
+            Logger.statistics.info("WebRepository Request \(endpoint.method) \(endpoint.path)")
             
             let request = try endpoint.urlRequest(baseURL: baseURL)
             
@@ -26,7 +27,7 @@ extension WebRepository {
                 .dataTaskPublisher(for: request)
                 .requestJSON(httpCodes: httpCodes)
         } catch let error {
-            print("WebRepository Error \(error)")
+            Logger.statistics.error("WebRepository Error \(error)")
             return Fail<Value, Error>(error: error).eraseToAnyPublisher()
         }
     }

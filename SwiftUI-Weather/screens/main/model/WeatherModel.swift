@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import OSLog
 
 final class WeatherModel: ObservableObject, WeatherModelStatePotocol {
     @Published var contentState: WeatherTypes.Model.ContentState = .loading
@@ -24,7 +25,7 @@ final class IsNightChecker: ObservableObject {
     }
     
     func checkIfIsNightTime(forecast: ForecastResponse) {
-        print(" Forecast is day => \(forecast.current.isDay)")
+        Logger.statistics.debug(" Forecast is day => \(forecast.current.isDay)")
         update(forecast.current.isDay == 0)
     }
 }

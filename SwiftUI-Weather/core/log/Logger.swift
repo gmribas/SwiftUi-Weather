@@ -1,5 +1,5 @@
 //
-//  Logger.swift
+//  ProjectLogger.swift
 //  SwiftUI-Weather
 //
 //  Created by Gemerson Ribas on 08/10/23.
@@ -7,7 +7,7 @@
 
 import OSLog
 
-struct ProjectLogger {
+extension Logger {
     /// Using your bundle identifier is a great way to ensure a unique identifier.
     private static var subsystem = Bundle.main.bundleIdentifier!
 
@@ -17,4 +17,3 @@ struct ProjectLogger {
     /// All logs related to tracking and analytics.
     static let statistics = Logger(subsystem: subsystem, category: "statistics")
 }
-

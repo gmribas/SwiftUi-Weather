@@ -59,6 +59,7 @@
 		53B8A36F2AB92F4500658175 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B8A36E2AB92F4500658175 /* Helpers.swift */; };
 		53BA42412AB528DE00F71EFC /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BA42402AB528DE00F71EFC /* BackgroundView.swift */; };
 		53BA42432AB52B6800F71EFC /* WeatherButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BA42422AB52B6800F71EFC /* WeatherButton.swift */; };
+		53BA7E972AD325CD0097EA95 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BA7E962AD325CD0097EA95 /* Logger.swift */; };
 		53D9502A2AC638300042C658 /* Hour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D950292AC638300042C658 /* Hour.swift */; };
 		53D9502C2AC639070042C658 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9502B2AC639070042C658 /* Day.swift */; };
 		53D9502E2AC639280042C658 /* Astro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9502D2AC639280042C658 /* Astro.swift */; };
@@ -147,6 +148,7 @@
 		53B8A36E2AB92F4500658175 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		53BA42402AB528DE00F71EFC /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		53BA42422AB52B6800F71EFC /* WeatherButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherButton.swift; sourceTree = "<group>"; };
+		53BA7E962AD325CD0097EA95 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		53D950292AC638300042C658 /* Hour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hour.swift; sourceTree = "<group>"; };
 		53D9502B2AC639070042C658 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		53D9502D2AC639280042C658 /* Astro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Astro.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 		5340E9822AB5F59800D72D91 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				53BA7E952AD325B80097EA95 /* log */,
 				53B04C8E2ACCC8A800A8791C /* location */,
 				53B8A3672AB904F300658175 /* bootstrap */,
 				53B8A35F2AB8FE6500658175 /* util */,
@@ -485,6 +488,14 @@
 			path = bootstrap;
 			sourceTree = "<group>";
 		};
+		53BA7E952AD325B80097EA95 /* log */ = {
+			isa = PBXGroup;
+			children = (
+				53BA7E962AD325CD0097EA95 /* Logger.swift */,
+			);
+			path = log;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -636,6 +647,7 @@
 				5346E2192AB7B165000441A5 /* WeatherTypes.swift in Sources */,
 				532D373F2AC7989100D20BD0 /* ForecastWeatherInteractor.swift in Sources */,
 				5346E21B2AB7B51E000441A5 /* WeatherHomeView+Build.swift in Sources */,
+				53BA7E972AD325CD0097EA95 /* Logger.swift in Sources */,
 				5340E9952AB5FCAA00D72D91 /* Inject.swift in Sources */,
 				53BA42412AB528DE00F71EFC /* BackgroundView.swift in Sources */,
 				5365DA512ABA80D900CC05A5 /* WeatherHomeInjection.swift in Sources */,

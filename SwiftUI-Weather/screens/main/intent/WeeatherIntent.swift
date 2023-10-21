@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 import CoreLocation
-import Logging
+import OSLog
 
 struct WeatherIntent {
 
@@ -87,11 +87,11 @@ extension WeatherIntent: WeatherIntentProtocol {
         DeviceLocationService.shared.coordinatesPublisher
             .receive(on: DispatchQueue.main)
             .sink { completion in
-                ProjectLogger.statistics.error("Handle \(completion.error?.localizedDescription ?? "EMPTY ERROR DESCRIPTION") for error and finished subscription.")
+                Logger.statistics.error("Handle \(completion.error?.localizedDescription ?? "EMPTY ERROR DESCRIPTION") for error and finished subscription.")
                 
                 model?.dispalyErrorAlert("Coordinates Publisher", "Handle \(completion) for error and finished subscription.")
             } receiveValue: { coordinates in
-                ProjectLogger.statistics.debug("COORDINATES \(coordinates.latitude) , \(coordinates.longitude)")
+                Logger.statistics.debug("COORDINATES \(coordinates.latitude) , \(coordinates.longitude)")
                 
                 let lat = coordinates.latitude
                 let lon = coordinates.longitude
@@ -112,7 +112,7 @@ extension WeatherIntent: WeatherIntentProtocol {
         DeviceLocationService.shared.deniedLocationAccessPublisher
             .receive(on: DispatchQueue.main)
             .sink {
-                ProjectLogger.statistics.error("Handle access denied event, possibly with an alert.")
+                Logger.statistics.error("Handle access denied event, possibly with an alert.")
                 model?.dispalyErrorAlert("Location Update", "Location Access Denied")
             }
             .store(in: cancelBag)

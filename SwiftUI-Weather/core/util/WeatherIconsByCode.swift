@@ -39,7 +39,7 @@ struct WeatherIconsByCode {
         return switch code {
         case 1000: "sun.max.fill"
         case 1003: "cloud.sun"
-        case 1006: "cloud.fill"
+        case 1006, 1009: "cloud.fill"
         case 1030: "sun.haze.fill"
         case 1063: "sun.rain.fill"
         case 1066: "sun.snow.fill"
@@ -61,7 +61,7 @@ struct WeatherIconsByCode {
         return switch code {
         case 1000: getNightIconCode(113)
         case 1003: getNightIconCode(116)
-        case 1006: getNightIconCode(119)
+        case 1006, 1009: getNightIconCode(119)
         case 1030: getNightIconCode(143)
         case 1063: getNightIconCode(176)
         case 1066: getNightIconCode(179)
@@ -82,7 +82,7 @@ struct WeatherIconsByCode {
         return switch code {
         case 113: "moon.fill"
         case 116: "cloud.moon"
-        case 119: "cloud.fill"
+        case 119, 122: "cloud.fill"
         case 143: "moon.haze.fill"
         case 176: "cloud.drizzle.fill"
         case 179: "cloud.snow.fill"

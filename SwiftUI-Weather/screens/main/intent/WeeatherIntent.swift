@@ -77,6 +77,7 @@ extension WeatherIntent: WeatherIntentProtocol {
                     }
                     
                 case let .failure(error):
+                    Logger.statistics.error("WeatherIntent invokeForecast Error \(error)")
                     self.model?.dispalyError(error)
                 }
             }

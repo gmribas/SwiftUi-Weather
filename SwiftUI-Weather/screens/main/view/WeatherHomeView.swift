@@ -23,8 +23,6 @@ struct WeatherHomeView: View {
         ZStack {
             BackgroundView(isNight: $isNightChecker.isNight)
             
-//            Spacer().frame(maxHeight: 40)
-            
             VStack {
                 switch state.contentState {
                 case .loading:
@@ -35,16 +33,20 @@ struct WeatherHomeView: View {
                 case .contentForecast(let location, let condition, let forecastResponse):
                     WeatherView(
                        title: "\(location.name)",
-                       titleSize: 32,
+                       titleSize: 45,
                        icon: WeatherIconsByCode.getIconByCode(condition.condition.code, forceNight: $isNightChecker.isNight),
+                       frameHeight: 350,
+                       frameWidht: 300,
                        temperature: condition.tempC,
                        feelsLike: condition.feelslikeC,
                        temperatureSize: 70,
-                       feelsLikeSize: 20,
+                       feelsLikeSize: 35,
                        iconFrame: 150,
                        textFrameW: 250,
                        textFrameH: 50
                    )
+                    
+                    let hStackHeight: CGFloat = 180
                     
                     ScrollView(.horizontal) {
                         HStack(spacing: 15) {
@@ -53,16 +55,18 @@ struct WeatherHomeView: View {
                                     title: item.time,
                                     titleSize: 12,
                                     icon: WeatherIconsByCode.getIconByCode(item.condition.code, forceNight: $isNightChecker.isNight),
+                                    frameHeight: 100,
+                                    frameWidht: hStackHeight,
                                     temperature: item.tempC,
                                     feelsLike: item.feelslikeC,
                                     temperatureSize: 20,
-                                    feelsLikeSize: 20,
+                                    feelsLikeSize: 25,
                                     iconFrame: 50)
                             }
                         }
-                        .background(Color.red)
-                    }
-                    .background(Color.gray)
+                        .frame(height: hStackHeight)
+                    }
+                    
 
                 case .error(let text):
                     Text(text)
@@ -72,7 +76,9 @@ struct WeatherHomeView: View {
             }
             .frame(
                 maxWidth: .infinity,
-                maxHeight: .infinity
+                maxHeight: .infinity,
+                alignment: .top
+
             )
         }
         .onAppear {

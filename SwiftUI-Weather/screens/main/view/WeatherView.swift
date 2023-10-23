@@ -13,6 +13,7 @@ struct WeatherView: View {
     let title: String
     let titleSize: CGFloat
     let icon: String
+    let frameHeight, frameWidht: CGFloat
     let temperature, feelsLike: Double
     let temperatureSize, feelsLikeSize: CGFloat
     let iconFrame: CGFloat
@@ -53,7 +54,12 @@ struct WeatherView: View {
                     .lineLimit(2)
             }
         }
-        .frame(width: iconFrame)
+        .frame(
+               minWidth: 0,
+               maxWidth: frameWidht,
+               minHeight: 0,
+               maxHeight: frameHeight,
+               alignment: .top)
     }
 }
 
@@ -70,6 +76,8 @@ struct WeatherView_Previews: PreviewProvider {
                 title: "FRI",
                 titleSize: 12,
                 icon: "cloud.sun.rain.fill",
+                frameHeight: 400,
+                frameWidht: 400,
                 temperature: Double.random(in: 0..<80),
                 feelsLike: Double.random(in: 0..<80),
                 temperatureSize: 24,

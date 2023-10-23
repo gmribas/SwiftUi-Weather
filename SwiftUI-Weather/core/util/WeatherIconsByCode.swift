@@ -107,7 +107,7 @@ struct WeatherIconsByCode {
  X 1000,Sunny,Clear,113
  X 1003,"Partly cloudy","Partly cloudy",116
  X 1006,Cloudy,Cloudy,119
- 1009,Overcast,Overcast,122
+ X 1009,Overcast,Overcast,122
  X 1030,Mist,Mist,143
  X 1063,"Patchy rain possible","Patchy rain possible",176
  X 1066,"Patchy snow possible","Patchy snow possible",179

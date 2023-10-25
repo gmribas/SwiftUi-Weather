@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5300FD602AE9B159009C32C9 /* LocalizableStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300FD5F2AE9B159009C32C9 /* LocalizableStrings.swift */; };
+		5300FD622AE9C66F009C32C9 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300FD612AE9C66F009C32C9 /* DateFormatter.swift */; };
+		5300FD642AE9C847009C32C9 /* JSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300FD632AE9C847009C32C9 /* JSONDecoder.swift */; };
 		532D373F2AC7989100D20BD0 /* ForecastWeatherInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532D373E2AC7989100D20BD0 /* ForecastWeatherInteractor.swift */; };
 		53300FFD2AB4C8FF006A1D6B /* SwiftUI_WeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53300FFC2AB4C8FF006A1D6B /* SwiftUI_WeatherApp.swift */; };
 		53300FFF2AB4C8FF006A1D6B /* WeatherHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53300FFE2AB4C8FF006A1D6B /* WeatherHomeView.swift */; };
@@ -44,6 +47,7 @@
 		5346E21D2AB7B67B000441A5 /* WeeatherIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5346E21C2AB7B67B000441A5 /* WeeatherIntent.swift */; };
 		5365DA512ABA80D900CC05A5 /* WeatherHomeInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5365DA502ABA80D900CC05A5 /* WeatherHomeInjection.swift */; };
 		536B243A2AC0C01000C5F503 /* WeatherIconsByCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536B24392AC0C01000C5F503 /* WeatherIconsByCode.swift */; };
+		5398AD582AE873A30018BD67 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5398AD572AE873A30018BD67 /* Localizable.xcstrings */; };
 		53B04C902ACCC8B300A8791C /* DeviceLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B04C8F2ACCC8B300A8791C /* DeviceLocationService.swift */; };
 		53B8A3562AB8FA2900658175 /* CurrentWeatherRemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B8A3552AB8FA2900658175 /* CurrentWeatherRemoteRepository.swift */; };
 		53B8A3582AB8FB0C00658175 /* CurrentWeatherRemoteRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B8A3572AB8FB0C00658175 /* CurrentWeatherRemoteRepositoryImpl.swift */; };
@@ -92,6 +96,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5300FD5F2AE9B159009C32C9 /* LocalizableStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableStrings.swift; sourceTree = "<group>"; };
+		5300FD612AE9C66F009C32C9 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		5300FD632AE9C847009C32C9 /* JSONDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecoder.swift; sourceTree = "<group>"; };
 		532D373E2AC7989100D20BD0 /* ForecastWeatherInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastWeatherInteractor.swift; sourceTree = "<group>"; };
 		53300FF92AB4C8FF006A1D6B /* SwiftUI-Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftUI-Weather.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53300FFC2AB4C8FF006A1D6B /* SwiftUI_WeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI_WeatherApp.swift; sourceTree = "<group>"; };
@@ -132,6 +139,7 @@
 		5346E21C2AB7B67B000441A5 /* WeeatherIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeatherIntent.swift; sourceTree = "<group>"; };
 		5365DA502ABA80D900CC05A5 /* WeatherHomeInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherHomeInjection.swift; sourceTree = "<group>"; };
 		536B24392AC0C01000C5F503 /* WeatherIconsByCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconsByCode.swift; sourceTree = "<group>"; };
+		5398AD572AE873A30018BD67 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		53B04C8F2ACCC8B300A8791C /* DeviceLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLocationService.swift; sourceTree = "<group>"; };
 		53B04C912ACCCAB900A8791C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		53B8A3552AB8FA2900658175 /* CurrentWeatherRemoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherRemoteRepository.swift; sourceTree = "<group>"; };
@@ -192,6 +200,7 @@
 		53300FF02AB4C8FE006A1D6B = {
 			isa = PBXGroup;
 			children = (
+				5398AD572AE873A30018BD67 /* Localizable.xcstrings */,
 				53300FFB2AB4C8FF006A1D6B /* SwiftUI-Weather */,
 				5330100D2AB4C902006A1D6B /* SwiftUI-WeatherTests */,
 				533010172AB4C902006A1D6B /* SwiftUI-WeatherUITests */,
@@ -467,6 +476,9 @@
 				53B8A36C2AB90E6800658175 /* CustomError.swift */,
 				53B8A36E2AB92F4500658175 /* Helpers.swift */,
 				536B24392AC0C01000C5F503 /* WeatherIconsByCode.swift */,
+				5300FD5F2AE9B159009C32C9 /* LocalizableStrings.swift */,
+				5300FD612AE9C66F009C32C9 /* DateFormatter.swift */,
+				5300FD632AE9C847009C32C9 /* JSONDecoder.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -609,6 +621,7 @@
 			files = (
 				533010052AB4C901006A1D6B /* Preview Assets.xcassets in Resources */,
 				533010012AB4C901006A1D6B /* Assets.xcassets in Resources */,
+				5398AD582AE873A30018BD67 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +653,7 @@
 				53B8A3632AB8FEA400658175 /* CancelBag.swift in Sources */,
 				53D9502E2AC639280042C658 /* Astro.swift in Sources */,
 				53B8A3692AB9053D00658175 /* AppEnvironment.swift in Sources */,
+				5300FD602AE9B159009C32C9 /* LocalizableStrings.swift in Sources */,
 				53D9502A2AC638300042C658 /* Hour.swift in Sources */,
 				5346E2082AB7AC75000441A5 /* RouterAlertModifier.swift in Sources */,
 				5346E2172AB7B0D6000441A5 /* WeatherModel.swift in Sources */,
@@ -677,6 +691,7 @@
 				53D950302AC639410042C658 /* Forecastday.swift in Sources */,
 				53D9502C2AC639070042C658 /* Day.swift in Sources */,
 				5340E9932AB5FA8800D72D91 /* DependencyType.swift in Sources */,
+				5300FD622AE9C66F009C32C9 /* DateFormatter.swift in Sources */,
 				5346E2032AB7AB8B000441A5 /* RouterProtocol.swift in Sources */,
 				5346E2122AB7AED7000441A5 /* RouterScreenProtocol.swift in Sources */,
 				53D950362AC639CC0042C658 /* ForecastResponse.swift in Sources */,
@@ -689,6 +704,7 @@
 				5346E1FF2AB7AA97000441A5 /* MVIContainer.swift in Sources */,
 				5346E20F2AB7AE41000441A5 /* WeatherIntentProtocol.swift in Sources */,
 				53D9503E2AC641BF0042C658 /* ForecastWeatherRemoteRepository.swift in Sources */,
+				5300FD642AE9C847009C32C9 /* JSONDecoder.swift in Sources */,
 				53300FFD2AB4C8FF006A1D6B /* SwiftUI_WeatherApp.swift in Sources */,
 				53B8A35C2AB8FDBF00658175 /* APICall.swift in Sources */,
 				53DE49422AD0B9A20088451E /* LocationAlertView.swift in Sources */,

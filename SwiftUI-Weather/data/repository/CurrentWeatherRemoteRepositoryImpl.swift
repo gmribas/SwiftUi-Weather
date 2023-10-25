@@ -16,9 +16,12 @@ struct CurrentWeatherRemoteRepositoryImpl: CurrentWeatherRemoteRepository {
     
     internal var bgQueue: DispatchQueue
     
-    init(session: URLSession, bgQueue: DispatchQueue) {
+    var jsonDecoder: JSONDecoder
+    
+    init(session: URLSession, bgQueue: DispatchQueue, jsonDecoder: JSONDecoder) {
         self.session = session
         self.bgQueue = bgQueue
+        self.jsonDecoder = jsonDecoder
     }
     
     func getCurrentWeather(location: String) -> AnyPublisher<CurrentConditionResponse?, Error> {

@@ -13,6 +13,7 @@ protocol WebRepository {
     var session: URLSession { get }
     var baseURL: String { get }
     var bgQueue: DispatchQueue { get }
+    var jsonDecoder: JSONDecoder { get }
 }
 
 extension WebRepository {
@@ -25,7 +26,7 @@ extension WebRepository {
             
             return session
                 .dataTaskPublisher(for: request)
-                .requestJSON(httpCodes: httpCodes)
+                .requestJSON(httpCodes: httpCodes, jsonDecoder: jsonDecoder)
         } catch let error {
             Logger.statistics.error("WebRepository Error \(error)")
             return Fail<Value, Error>(error: error).eraseToAnyPublisher()
@@ -36,7 +37,7 @@ extension WebRepository {
 // MARK: - Helpers
 
 extension Publisher where Output == URLSession.DataTaskPublisher.Output {
-    func requestData(httpCodes: HTTPCodes) -> AnyPublisher<Data, Error> {
+    func requestData(httpCodes: HTTPCodes, jsonDecoder: JSONDecoder) -> AnyPublisher<Data, Error> {
         return tryMap {
             assert(!Thread.isMainThread)
             let data = $0.0
@@ -56,9 +57,9 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
 }
 
 private extension Publisher where Output == URLSession.DataTaskPublisher.Output {
-    func requestJSON<Value>(httpCodes: HTTPCodes) -> AnyPublisher<Value, Error> where Value: Codable {
-        return requestData(httpCodes: httpCodes)
-            .decode(type: Value.self, decoder: JSONDecoder())
+    func requestJSON<Value>(httpCodes: HTTPCodes, jsonDecoder: JSONDecoder) -> AnyPublisher<Value, Error> where Value: Codable {
+        return requestData(httpCodes: httpCodes, jsonDecoder: jsonDecoder)
+            .decode(type: Value.self, decoder: jsonDecoder)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }

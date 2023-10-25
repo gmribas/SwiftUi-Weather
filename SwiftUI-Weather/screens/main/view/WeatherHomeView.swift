@@ -33,12 +33,12 @@ struct WeatherHomeView: View {
                 case .contentForecast(let location, let condition, let forecastResponse):
                     WeatherView(
                        title: "\(location.name)",
+                       bottomText: LocalizableStrings.localize(key: "feels_like", arguments: String(format: "%.0f", condition.feelslikeC)),
                        titleSize: 45,
                        icon: WeatherIconsByCode.getIconByCode(condition.condition.code, forceNight: $isNightChecker.isNight),
-                       frameHeight: 350,
+                       frameHeight: 370,
                        frameWidht: 300,
-                       temperature: condition.tempC,
-                       feelsLike: condition.feelslikeC,
+                       temperature: condition.tempC ?? 0,
                        temperatureSize: 70,
                        feelsLikeSize: 35,
                        iconFrame: 150,
@@ -52,13 +52,13 @@ struct WeatherHomeView: View {
                         HStack(spacing: 15) {
                             ForEach(forecastResponse.forecast?.forecastday?.first?.hour ?? [Hour](), id: \.timeEpoch) { item in
                                 WeatherView(
-                                    title: item.time,
+                                    title: DateFormatter.formatWith(date: item.time, format: Constants.DAY_MONTH_YEAR_DATE_FORMAT),
+                                    bottomText: NSLocalizedString("feels_like", comment: "\(item.feelslikeC)"),
                                     titleSize: 12,
                                     icon: WeatherIconsByCode.getIconByCode(item.condition.code, forceNight: $isNightChecker.isNight),
-                                    frameHeight: 100,
+                                    frameHeight: 130,
                                     frameWidht: hStackHeight,
-                                    temperature: item.tempC,
-                                    feelsLike: item.feelslikeC,
+                                    temperature: item.tempC ?? 0,
                                     temperatureSize: 20,
                                     feelsLikeSize: 25,
                                     iconFrame: 50)

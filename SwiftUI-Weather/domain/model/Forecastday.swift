@@ -4,9 +4,10 @@
 //
 //  Created by Gemerson Ribas on 28/09/23.
 //
+import Foundation
 
 struct Forecastday: Codable {
-    let date: String
+    let date: Date
     let dateEpoch: Double
     let day: Day?
     let astro: Astro?

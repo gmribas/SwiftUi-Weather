@@ -10,11 +10,11 @@ import SwiftUI
 
 struct WeatherView: View {
     
-    let title: String
+    let title, bottomText: String
     let titleSize: CGFloat
     let icon: String
     let frameHeight, frameWidht: CGFloat
-    let temperature, feelsLike: Double
+    let temperature: CGFloat
     let temperatureSize, feelsLikeSize: CGFloat
     let iconFrame: CGFloat
     var textFrameW: CGFloat? = nil
@@ -47,7 +47,7 @@ struct WeatherView: View {
                     .foregroundColor(.white)
                     .lineLimit(1)
                 
-                Text("Feels like \(String(format: "%.0f", feelsLike))°")
+                Text(bottomText)
                     .font(.system(size: feelsLikeSize, weight: .medium))
                     .foregroundColor(.white)
                     .minimumScaleFactor(0.5)
@@ -72,20 +72,23 @@ struct WeatherView_Previews: PreviewProvider {
                            endPoint: .bottomTrailing)
             .edgesIgnoringSafeArea(.all)
         
-            WeatherView(
-                title: "FRI",
-                titleSize: 12,
-                icon: "cloud.sun.rain.fill",
-                frameHeight: 400,
-                frameWidht: 400,
-                temperature: Double.random(in: 0..<80),
-                feelsLike: Double.random(in: 0..<80),
-                temperatureSize: 24,
-                feelsLikeSize: 12,
-                iconFrame: 50,
-                textFrameW: 80,
-                textFrameH: 50
-            )
+            VStack {
+                WeatherView(
+                    title: "FRI",
+                    bottomText: LocalizableStrings.localize(key: "feels_like", arguments: String(format: "%.0f",Double.random(in: 0..<80))),
+                    titleSize: 12,
+                    icon: "cloud.sun.rain.fill",
+                    frameHeight: 200,
+                    frameWidht: 100,
+                    temperature: Double.random(in: 0..<80),
+                    temperatureSize: 24,
+                    feelsLikeSize: 22,
+                    iconFrame: 50,
+                    textFrameW: 80,
+                    textFrameH: 50
+                )
+            }
+            .background(Color.gray)
         }
         
     }

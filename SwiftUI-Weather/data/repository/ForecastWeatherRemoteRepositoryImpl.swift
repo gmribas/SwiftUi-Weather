@@ -16,9 +16,12 @@ struct ForecastWeatherRemoteRepositoryImpl: ForecastWeatherRemoteRepository {
     
     internal var bgQueue: DispatchQueue
     
-    init(session: URLSession, bgQueue: DispatchQueue) {
+    var jsonDecoder: JSONDecoder
+    
+    init(session: URLSession, bgQueue: DispatchQueue, jsonDecoder: JSONDecoder) {
         self.session = session
         self.bgQueue = bgQueue
+        self.jsonDecoder = jsonDecoder
     }
     
     func getForecast(location: String) -> AnyPublisher<ForecastResponse?, Error> {

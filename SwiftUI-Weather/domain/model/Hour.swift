@@ -5,10 +5,12 @@
 //  Created by Gemerson Ribas on 28/09/23.
 //
 
+import Foundation
+
 struct Hour: Codable {
     let timeEpoch: Double
-    let time: String
-    let tempC, tempF: Double
+    let time: Date
+    let tempC, tempF: Double?
     let isDay: Int
     let condition: Condition
     let windMph, windKph: Double

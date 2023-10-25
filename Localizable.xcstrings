@@ -1,0 +1,51 @@
+{
+  "sourceLanguage" : "pt-BR",
+  "strings" : {
+    "" : {
+
+    },
+    "%@°" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Canceled by user" : {
+
+    },
+    "Data is missing" : {
+
+    },
+    "feels_like" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : " \"Feels like %@°\""
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " \"Sensação térmica %.2d °\""
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Something went wrong" : {
+
+    }
+  },
+  "version" : "1.0"
+}

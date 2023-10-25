@@ -12,7 +12,7 @@ struct Location: Codable {
     let lat: Double
     let lon: Double
     let tzID: String
-    let localtimeEpoch: Int
+    let localtimeEpoch: Int?
     let localtime: String
     
     enum CodingKeys: String, CodingKey {

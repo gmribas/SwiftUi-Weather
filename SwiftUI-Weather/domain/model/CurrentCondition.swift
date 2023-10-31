@@ -10,7 +10,7 @@ import Foundation
 struct CurrentCondition: Codable {
     let lastUpdatedEpoch: Int
     let lastUpdated: Date
-    let tempC, tempF: Double?
+    let tempC, tempF: Double
     let isDay: Int
     let condition: Condition
     let windMph, windKph: Double

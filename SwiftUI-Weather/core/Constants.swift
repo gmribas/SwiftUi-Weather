@@ -15,7 +15,8 @@ struct Constants {
     static let FORECAST = "/forecast.json?key=\(Constants.WEATHER_API_KEY)"
     static let FORECAST_MAX_DAYS_FREE_PLAN = "3"
     static let LANGUAGE_PT = "lang=pt"
-    static let API_DATE_FORMAT = "yyyy-MM-dd HH:mm"
+    static let API_DATE_HOUR_FORMAT = "yyyy-MM-dd HH:mm"
+    static let API_DATE_FORMAT = "yyyy-MM-dd"
     static let DAY_MONTH_YEAR_DATE_FORMAT = "dd/MM/yyyy"
     static let HOUR_MINUTE_DATE_FORMAT = "HH:mm"
 }

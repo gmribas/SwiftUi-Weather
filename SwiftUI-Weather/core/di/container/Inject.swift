@@ -17,7 +17,7 @@ struct Inject<T> {
         mutating set { dependency = newValue }
     }
     
-    init(_ type: DependencyType, dependency: T) {
+    init(_ type: DependencyType = .automatic) {
         guard let dependency = DependencyInjectionContainer.resolve(type, T.self) else {
             let dependencyName = String(describing: T.self)
             fatalError("No dependency of type \(dependencyName) registered!")

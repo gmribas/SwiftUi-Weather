@@ -14,7 +14,10 @@ extension AppEnvironment {
         do {
             RestDependencyInjection.register()
             try InteractorDependencyInjection().register()
-            WeatherHomeInjection.register()
+            
+            MainInjection().register()
+            WeatherHomeInjection().register()
+            HourlyForecastHomeInjection().register()
         } catch {
             fatalError("AppEnvironment bootstrap problem")
         }

@@ -1,30 +1,30 @@
 //
-//  WeatherRouter.swift
+//  MainRouter.swift
 //  SwiftUI-Weather
 //
-//  Created by Gemerson Ribas on 17/09/23.
+//  Created by Gemerson Ribas on 28/10/23.
 //
 
 import SwiftUI
 import Foundation
 
-struct WeatherRouter: RouterProtocol {
+struct MainRouter: RouterProtocol {
     typealias RouterScreenType = ScreenType
     typealias RouterAlertType = AlertScreen
 
     let subjects: Subjects
-    let intent: WeatherIntentProtocol
+    let intent: MainIntentProtocol
 }
 
 // MARK: - Navigation Screens
 
-extension WeatherRouter {
+extension MainRouter {
     enum ScreenType: RouterScreenProtocol {
-        case showHomeWeather
+        case showMainWindow
 
         var routeType: RouterScreenPresentationType {
             switch self {
-            case .showHomeWeather:
+            case .showMainWindow:
                 return .navigationLink
             }
         }
@@ -33,8 +33,8 @@ extension WeatherRouter {
     @ViewBuilder
     func makeScreen(type: RouterScreenType) -> some View {
         switch type {
-        case .showHomeWeather:
-            WeatherHomeView.build()
+        case .showMainWindow:
+            MainView.build()
         }
     }
 
@@ -43,7 +43,7 @@ extension WeatherRouter {
 
 // MARK: - Alerts
 
-extension WeatherRouter {
+extension MainRouter {
     enum AlertScreen: RouterAlertScreenProtocol {
         case defaultAlert(title: String, message: String?)
     }

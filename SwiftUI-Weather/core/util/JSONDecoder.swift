@@ -6,17 +6,28 @@
 //
 
 import Foundation
+import OSLog
 
 extension JSONDecoder.DateDecodingStrategy {
     
    static var iso8601yyyyMMdd = custom { decoder in
        
        let dateStr = try decoder.singleValueContainer().decode(String.self)
-       let customIsoFormatter = DateFormatter.yyyyMMdd
+       var customIsoFormatter = DateFormatter.apiDateHourFormat
+       
        if let date = customIsoFormatter.date(from: dateStr) {
            return date
        }
-      throw DecodingError.dataCorrupted(
+       
+       customIsoFormatter = DateFormatter.apiDateFormat
+       
+       if let date = customIsoFormatter.date(from: dateStr) {
+           return date
+       }
+       
+       Logger.statistics.error("INVALID DATE: \(dateStr)")
+       
+       throw DecodingError.dataCorrupted(
                DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid date"))
    }
 }

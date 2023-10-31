@@ -16,20 +16,6 @@ final class WeatherModel: ObservableObject, WeatherModelStatePotocol {
     let routerSubject = WeatherRouter.Subjects()
 }
 
-final class IsNightChecker: ObservableObject {
-    @Published var isNight = false
-    
-    private func update(_ isNightTime: Bool) {
-        isNight = isNightTime
-        self.objectWillChange.send()
-    }
-    
-    func checkIfIsNightTime(forecast: ForecastResponse) {
-        Logger.statistics.debug(" Forecast is day => \(forecast.current.isDay)")
-        update(forecast.current.isDay == 0)
-    }
-}
-
 // MARK: - Actions Protocol
 
 extension WeatherModel: WeatherModelActionsProtocol {

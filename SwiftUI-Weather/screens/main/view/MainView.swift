@@ -20,6 +20,10 @@ struct MainView: View {
     
     private var state: MainModelStatePotocol { container.model }
     
+    private let weatherSubjects = RouterSubjects<WeatherRouter.ScreenType, WeatherRouter.RouterAlertType>()
+    
+    private let hourlySubjects = RouterSubjects<HourlyForecastRouter.ScreenType, HourlyForecastRouter.RouterAlertType>()
+    
     var body: some View {
         ZStack {
             BackgroundView(isNight: $isNightChecker.isNight)
@@ -32,29 +36,21 @@ struct MainView: View {
                         .progressViewStyle(CircularProgressViewStyle(tint: Color.blue))
                     
                 case .error(let text):
-                    Text(text)
+                    LocationAlertView(errorAlert: errorAlert, title: "Error", message: text)
                     
                 case .errorAlert(let title, let message):
                     LocationAlertView(errorAlert: errorAlert, title: title, message: message)
             
                 case .showForecast(location: let location, currentCondition: let currentCondition, forecast: let forecast):
                     TabView {
-                        WeatherHomeView
-                            .build(
-                                isNightChecker: isNightChecker,
-                                location: location,
-                                currentCondition: currentCondition,
-                                forecast: forecast
-                            )
+                        WeatherRouter(subjects: weatherSubjects)
+                            .makeScreen(type: .showHomeWeather(location: location, currentCondition: currentCondition, forecast: forecast))
                             .tabItem {
                                 Label("Today", systemImage: "house.fill")
                             }
                         
-                        HourlyForecastHomeView
-                            .build(
-                                isNightChecker: isNightChecker,
-                                forecast: forecast
-                            )
+                        HourlyForecastRouter(subjects: hourlySubjects)
+                            .makeScreen(type: .showHourlyForecast(forecast: forecast))
                             .tabItem {
                                 Label("Hourly", systemImage: "clock.fill")
                             }

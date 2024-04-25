@@ -74,7 +74,6 @@ struct WeatherHomeView: View {
         switch state.sunsetState {
         case .showSunsetCondition(let hour):
             title = "Sunset"
-//            title = NSLocalizedString("Today", comment: "")
             icon = WeatherIconsByCode.getIconByCode(hour.condition.code, forceNight: $isNightChecker.isNight)
             temperature = hour.tempC ?? 0
         

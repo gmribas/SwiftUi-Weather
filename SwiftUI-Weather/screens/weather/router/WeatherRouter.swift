@@ -14,10 +14,6 @@ struct WeatherRouter: RouterProtocol {
 
     let subjects: Subjects
     
-    let intent: WeatherIntentProtocol
-    
-    @Inject var model: WeatherModelStatePotocol
-    
     @Inject var isNightChecker: IsNightChecker
 }
 
@@ -25,7 +21,7 @@ struct WeatherRouter: RouterProtocol {
 
 extension WeatherRouter {
     enum ScreenType: RouterScreenProtocol {
-        case showHomeWeather
+        case showHomeWeather(location: Location, currentCondition: CurrentCondition, forecast: ForecastResponse)
 
         var routeType: RouterScreenPresentationType {
             switch self {
@@ -38,17 +34,16 @@ extension WeatherRouter {
     @ViewBuilder
     func makeScreen(type: RouterScreenType) -> some View {
         switch type {
-        case .showHomeWeather:
-//            WeatherHomeView
-//                .build(
+        case .showHomeWeather(location: let location, currentCondition: let currentCondition, forecast: let forecast):
+            WeatherHomeView
+                .build(
 //                    model: self.model,
 //                    intent: self.intent,
-//                    isNightChecker: self.isNightChecker,
-//                    location: location,
-//                    currentCondition: currentCondition,
-//                    forecast: forecast
-//                )
-            Text("")
+                    isNightChecker: self.isNightChecker,
+                    location: location,
+                    currentCondition: currentCondition,
+                    forecast: forecast
+                )
         }
     }
 

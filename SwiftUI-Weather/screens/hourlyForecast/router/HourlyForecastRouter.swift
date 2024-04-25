@@ -13,14 +13,15 @@ struct HourlyForecastRouter: RouterProtocol {
     typealias RouterAlertType = AlertScreen
 
     let subjects: Subjects
-    let intent: HourlyForecastIntentProtocol
+    
+    @Inject var isNightChecker: IsNightChecker
 }
 
 // MARK: - Navigation Screens
 
 extension HourlyForecastRouter {
     enum ScreenType: RouterScreenProtocol {
-        case showHourlyForecast
+        case showHourlyForecast(forecast: ForecastResponse)
 
         var routeType: RouterScreenPresentationType {
             switch self {
@@ -33,9 +34,8 @@ extension HourlyForecastRouter {
     @ViewBuilder
     func makeScreen(type: RouterScreenType) -> some View {
         switch type {
-        case .showHourlyForecast:
-//            HourlyForecastHomeView.build()
-            Text("")
+        case .showHourlyForecast(let forecast):
+            HourlyForecastHomeView.build(isNightChecker: isNightChecker, forecast: forecast)
         }
     }
 

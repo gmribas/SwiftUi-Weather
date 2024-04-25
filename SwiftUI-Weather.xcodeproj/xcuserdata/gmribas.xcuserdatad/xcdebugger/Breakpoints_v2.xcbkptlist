@@ -23,16 +23,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1A1CE494-A99C-49BE-A569-42A564EB0FA2"
+            uuid = "F941C8DC-6CE2-4343-ABCA-1DF7EA460D6E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SwiftUI-Weather/screens/weather/view/WeatherHomeView.swift"
+            filePath = "SwiftUI-Weather/SwiftUI_WeatherApp.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "buildSunsetItem()"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "init()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

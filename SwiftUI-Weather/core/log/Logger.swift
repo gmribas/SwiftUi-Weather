@@ -15,5 +15,17 @@ extension Logger {
     static let viewCycle = Logger(subsystem: subsystem, category: "viewcycle")
 
     /// All logs related to tracking and analytics.
-    static let statistics = Logger(subsystem: subsystem, category: "statistics")
+    private static let statistics = Logger(subsystem: subsystem, category: "statistics")
+    
+    static func debugLog(_ message: String) {
+        statistics.debug("\(message)")
+    }
+    
+    static func errorLog(_ message: String) {
+        statistics.error("\(message)")
+    }
+    
+    static func infoLog(_ message: String) {
+        statistics.info("\(message)")
+    }
 }

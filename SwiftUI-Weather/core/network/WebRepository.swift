@@ -20,15 +20,22 @@ extension WebRepository {
     func call<Value>(endpoint: APICall, httpCodes: HTTPCodes = .success) -> AnyPublisher<Value, Error>
         where Value: Codable {
         do {
-            Logger.statistics.info("WebRepository Request \(endpoint.method) \(endpoint.path)")
+            Logger.infoLog("WebRepository Request \(endpoint.method) \(endpoint.path)")
             
             let request = try endpoint.urlRequest(baseURL: baseURL)
+            
+            if let cachedResponse = URLSession.shared.configuration.urlCache?.cachedResponse(for: request) {
+                let httpResponse = cachedResponse.response as? HTTPURLResponse
+                return session
+                    .dataTaskPublisher(for: request)
+                    .publishCache(cacheResponse: httpResponse, jsonDecoder: jsonDecoder)
+            }
             
             return session
                 .dataTaskPublisher(for: request)
                 .requestJSON(httpCodes: httpCodes, jsonDecoder: jsonDecoder)
         } catch let error {
-            Logger.statistics.error("WebRepository Error \(error)")
+            Logger.errorLog("WebRepository Error \(error)")
             return Fail<Value, Error>(error: error).eraseToAnyPublisher()
         }
     }
@@ -68,13 +75,26 @@ private extension Publisher where Output == URLSession.DataTaskPublisher.Output 
     }
 }
 
+private extension Publisher where Output == URLSession.DataTaskPublisher.Output {
+    func publishCache<Value>(cacheResponse: HTTPURLResponse?, jsonDecoder: JSONDecoder) -> AnyPublisher<Value, Error> where Value: Codable {
+        return tryMap {
+            assert(!Thread.isMainThread)
+            let data = $0.0
+            Logger.debugLog("cached value -> \(data)")
+            return try jsonDecoder.decode(Value.self, from: data)
+        }
+        .extractUnderlyingError()
+        .eraseToAnyPublisher()
+    }
+}
+
 
 private func rawValueLogger(data: Data) {
     if let string = String(bytes: data, encoding: .utf8) {
-        Logger.statistics.debug("raw value -> \(string)")
-        Logger.statistics.debug("=======================")
-        Logger.statistics.debug("=======================")
+        Logger.debugLog("raw value -> \(string)")
+        Logger.debugLog("=======================")
+        Logger.debugLog("=======================")
     } else {
-        Logger.statistics.debug("not a valid UTF-8 sequence")
+        Logger.debugLog("not a valid UTF-8 sequence")
     }
 }

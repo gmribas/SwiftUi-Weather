@@ -75,7 +75,7 @@ extension MainIntent: MainIntentProtocol {
                     }
                     
                 case let .failure(error):
-                    Logger.statistics.error("WeatherIntent invokeForecast Error \(error)")
+                    Logger.errorLog("WeatherIntent invokeForecast Error \(error)")
                     self.model?.dispalyError(error)
                 }
             }
@@ -86,11 +86,11 @@ extension MainIntent: MainIntentProtocol {
         DeviceLocationService.shared.coordinatesPublisher
             .receive(on: DispatchQueue.main)
             .sink { completion in
-                Logger.statistics.error("Handle \(completion.error?.localizedDescription ?? "EMPTY ERROR DESCRIPTION") for error and finished subscription.")
+                Logger.errorLog("Handle \(completion.error?.localizedDescription ?? "EMPTY ERROR DESCRIPTION") for error and finished subscription.")
                 
                 model?.dispalyErrorAlert("Coordinates Publisher", "Handle \(completion) for error and finished subscription.")
             } receiveValue: { coordinates in
-                Logger.statistics.debug("COORDINATES \(coordinates.latitude) , \(coordinates.longitude)")
+                Logger.debugLog("COORDINATES \(coordinates.latitude) , \(coordinates.longitude)")
                 
                 let lat = coordinates.latitude
                 let lon = coordinates.longitude
@@ -111,7 +111,7 @@ extension MainIntent: MainIntentProtocol {
         DeviceLocationService.shared.deniedLocationAccessPublisher
             .receive(on: DispatchQueue.main)
             .sink {
-                Logger.statistics.error("Handle access denied event, possibly with an alert.")
+                Logger.errorLog("Handle access denied event, possibly with an alert.")
                 model?.dispalyErrorAlert("Location Update", "Location Access Denied")
             }
             .store(in: cancelBag)

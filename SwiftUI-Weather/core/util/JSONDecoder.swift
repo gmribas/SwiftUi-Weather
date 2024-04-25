@@ -31,17 +31,17 @@ extension JSONDecoder.DateDecodingStrategy {
                return c
            }
            
-           Logger.statistics.error("PROBLEMS DEFINING CORRECT DATE FOR: \(dateStr)")
+           Logger.errorLog("PROBLEMS DEFINING CORRECT DATE FOR: \(dateStr)")
            
            return date
        }
        
        if Astro.isAstroDateFuckedUp(dateString: dateStr) {
-           Logger.statistics.error("INVALID MOFO Astro DATE: \(dateStr)")
+           Logger.errorLog("INVALID MOFO Astro DATE: \(dateStr)")
            return Date()
        }
        
-       Logger.statistics.error("INVALID DATE: \(dateStr)")
+       Logger.errorLog("INVALID DATE: \(dateStr)")
        
        throw DecodingError.dataCorrupted(
                DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid date"))

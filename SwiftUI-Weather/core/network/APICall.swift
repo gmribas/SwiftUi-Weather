@@ -41,6 +41,7 @@ extension APICall {
         request.httpMethod = method
         request.allHTTPHeaderFields = headers
         request.httpBody = try body()
+        request.cachePolicy = .returnCacheDataDontLoad
         return request
     }
 }

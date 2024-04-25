@@ -31,7 +31,7 @@ struct WeatherIconsByCode {
         let result = value ?? DEFAULT_ERROR_ICON //an ellegant way to show that the current icon has not been found ;)
         
         if (result == DEFAULT_ERROR_ICON) {
-            Logger.statistics.error("Weather code not found \(code)")
+            Logger.errorLog("Weather code not found \(code)")
         }
         
         return result

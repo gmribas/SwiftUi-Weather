@@ -18,7 +18,7 @@ final class IsNightChecker: ObservableObject {
     }
     
     func checkIfIsNightTime(forecast: ForecastResponse) {
-        Logger.statistics.debug(" Forecast is day => \(forecast.current.isDay)")
+        Logger.debugLog(" Forecast is day => \(forecast.current.isDay)")
         update(forecast.current.isDay == 0)
     }
 }

@@ -54,7 +54,7 @@ extension HourlyForecastIntent: HourlyForecastIntentProtocol {
                     }
                     
                 case let .failure(error):
-                    Logger.statistics.error("HourlyForecastIntent invokeForecast Error \(error)")
+                    Logger.errorLog("HourlyForecastIntent invokeForecast Error \(error)")
                     self.model?.dispalyError(error)
                 }
             }

@@ -49,14 +49,14 @@ extension WeatherIntent: WeatherIntentProtocol {
         if let today = optionalToday {
             getSunsetCondition(forecastday: today)
         } else {
-            Logger.statistics.error("forecastday today not found")
+            Logger.errorLog("forecastday today not found")
         }
         
         if let tomorrow = optionalTomorrow  {
             getTomorrowCondition(forecastday: tomorrow)
         }
         else {
-            Logger.statistics.error("forecastday tomorrow not found")
+            Logger.errorLog("forecastday tomorrow not found")
         }
     }
     
@@ -96,7 +96,7 @@ extension WeatherIntent: WeatherIntentProtocol {
             return nil
         }
         
-        Logger.statistics.debug("sunset \(sunset)")
+        Logger.debugLog("sunset \(sunset)")
         
         for (index, h) in forecastday.hour.enumerated() {
             if index + 1 < count {
@@ -146,7 +146,7 @@ extension WeatherIntent: WeatherIntentProtocol {
             temperature: forecastday.day?.avgtempC ?? Constants.ERROR_VALUE,
             iconCode: forecastday.day?.condition.code ?? Int(Constants.ERROR_VALUE))
         
-        Logger.statistics.debug("tomorrow is \(formattedDay) - avg \(forecastday.day?.avgtempC ?? Constants.ERROR_VALUE)")
+        Logger.debugLog("tomorrow is \(formattedDay) - avg \(forecastday.day?.avgtempC ?? Constants.ERROR_VALUE)")
         
         return tomorrow
     }

@@ -11,12 +11,26 @@ extension WeatherHomeView {
 
     static func build(isNightChecker: IsNightChecker, location: Location, currentCondition: CurrentCondition, forecast: ForecastResponse) -> WeatherHomeView {
         let view = WeatherHomeView(
-            isNightChecker: Binding.constant(isNightChecker),
-            location: Binding.constant(location),
-            currentCondition: Binding.constant(currentCondition),
-            forecast: Binding.constant(forecast)
+            container: WheatherHomeViewBuilderHelper().buildContainer(),
+            isNightChecker: isNightChecker,
+            location: location,
+            currentCondition: currentCondition,
+            forecast: forecast
         )
         
         return view
+    }
+}
+
+struct WheatherHomeViewBuilderHelper {
+    @Inject private var intent: WeatherIntentProtocol
+    
+    @Inject private var model: WeatherModel
+    
+    func buildContainer() -> MVIContainer<WeatherIntentProtocol, WeatherModelStatePotocol> {
+        return MVIContainer(
+            intent: intent as WeatherIntentProtocol,
+            model: model as WeatherModelStatePotocol,
+            modelChangePublisher: model.objectWillChange)
     }
 }

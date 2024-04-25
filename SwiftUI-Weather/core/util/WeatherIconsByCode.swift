@@ -11,6 +11,8 @@ import OSLog
 
 struct WeatherIconsByCode {
     
+    static let DEFAULT_ERROR_ICON = "exclamationmark.octagon.fill"
+    
     static func getIconByCode(_ code: Int, forceNight: Binding<Bool>) -> String {
         var value: String? = nil
         
@@ -26,9 +28,9 @@ struct WeatherIconsByCode {
             value = getNightIconCode(code)
         }
         
-        let result = value ?? "exclamationmark.octagon.fill" //an ellegant way to show that the current icon has not been found ;)
+        let result = value ?? DEFAULT_ERROR_ICON //an ellegant way to show that the current icon has not been found ;)
         
-        if (result == "exclamationmark.octagon.fill") {
+        if (result == DEFAULT_ERROR_ICON) {
             Logger.statistics.error("Weather code not found \(code)")
         }
         

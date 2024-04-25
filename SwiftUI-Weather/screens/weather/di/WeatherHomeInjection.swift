@@ -17,10 +17,11 @@ struct WeatherHomeInjection {
     
     func register() {
         let model = WeatherModel()
+        DependencyInjectionContainer.register(WeatherModelStatePotocol.self, model)
         DependencyInjectionContainer.register(WeatherModel.self, model)
         
         let intent = WeatherIntent(model: model, externalData: .init(), currentWeatherInteractor: self.currentWeatherInteractor, forecastInteractor: self.forecastInteractor)
         
-        DependencyInjectionContainer.register(WeatherIntent.self, intent)
+        DependencyInjectionContainer.register(WeatherIntentProtocol.self, intent)
     }
 }

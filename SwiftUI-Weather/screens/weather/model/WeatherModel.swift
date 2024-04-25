@@ -7,37 +7,37 @@
 
 import SwiftUI
 import Combine
-import OSLog
 
 final class WeatherModel: ObservableObject, WeatherModelStatePotocol {
-    @Published var contentState: WeatherTypes.Model.ContentState = .loading
-    let loadingText = "Loading"
-    let navigationTitle = "SwiftUI Videos"
+    @Published var sunsetState: WeatherTypes.Model.SunsetState = .none
+    
+    @Published var tomorrowState: WeatherTypes.Model.TomorrowState = .none
+    
     let routerSubject = WeatherRouter.Subjects()
+    
+    internal var today: Forecastday? = nil
+    
+    internal var tomorrow: Forecastday? = nil
 }
 
 // MARK: - Actions Protocol
 
 extension WeatherModel: WeatherModelActionsProtocol {
 
-    func dispalyLoading() {
-        contentState = .loading
+    func showCurrentHourCondition(hour: Hour) {
+        self.sunsetState = .showSunsetCondition(hour)
     }
     
-    func updateForecast(location: Location, currentCondition: CurrentCondition, forecast: ForecastResponse) {
-        contentState = .contentForecast(location: location, currentCondition: currentCondition, forecastResponse: forecast)
-    }
-
-    func dispalyError(_ error: Error) {
-        contentState = .error(text: "Fail")
+    func showCurrentHourConditionError() {
+        self.sunsetState = .showSunsetConditionError
     }
     
-    func dispalyLocationDenied() {
-        contentState = .errorAlert("Location Update", "Location has been denied")
+    func showTomorrow(tomorrow: TomorrowConditionDTO) {
+        self.tomorrowState = .showTomorrow(tomorrow: tomorrow)
     }
     
-    func dispalyErrorAlert(_ title: String, _ message: String) {
-        contentState = .errorAlert(title, message)
+    func showTomorrowError() {
+        self.tomorrowState = .showTomorrowError
     }
 }
 
@@ -52,10 +52,15 @@ extension WeatherModel: WeatherModelRouterProtocol {
 // MARK: - Helper classes
 
 extension WeatherTypes.Model {
-    enum ContentState {
-        case loading
-        case contentForecast(location: Location, currentCondition: CurrentCondition, forecastResponse: ForecastResponse)
-        case error(text: String)
-        case errorAlert(_ title: String, _ message: String)
+    enum SunsetState {
+        case none
+        case showSunsetCondition(_ hour: Hour)
+        case showSunsetConditionError
+    }
+    
+    enum TomorrowState {
+        case none
+        case showTomorrow(tomorrow: TomorrowConditionDTO)
+        case showTomorrowError
     }
 }

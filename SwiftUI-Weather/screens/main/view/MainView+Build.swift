@@ -8,16 +8,8 @@
 import SwiftUI
 
 extension MainView {
-
-    static func build() -> some View {
-        guard let model = DependencyInjectionContainer.resolve(.automatic, MainModel.self) else {
-            fatalError("No dependency of type MainModel registered!")
-        }
-        
-        guard let intent = DependencyInjectionContainer.resolve(.automatic, MainIntent.self) else {
-            fatalError("No dependency of type MainModel registered!")
-        }
-        
+    
+    static func build(model: MainModel, intent: MainIntent) -> some View {
         let container = MVIContainer(
             intent: intent as MainIntentProtocol,
             model: model as MainModelStatePotocol,

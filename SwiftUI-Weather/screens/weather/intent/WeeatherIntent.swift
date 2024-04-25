@@ -18,12 +18,6 @@ struct WeatherIntent {
     
     private weak var routeModel: WeatherModelRouterProtocol?
     
-    // MARK: Interactor
-
-    private var currentWeatherInteractor: CurrentWeatherInteractor
-    
-    private var forecastInteractor: ForecastWeatherInteractor
-    
     // MARK: Business Data
 
     private let externalData: WeatherTypes.Intent.ExternalData
@@ -41,8 +35,6 @@ struct WeatherIntent {
         self.externalData = externalData
         self.model = model
         self.routeModel = model
-        self.currentWeatherInteractor = currentWeatherInteractor
-        self.forecastInteractor = forecastInteractor
     }
 }
 
@@ -50,81 +42,113 @@ struct WeatherIntent {
 
 extension WeatherIntent: WeatherIntentProtocol {
     
-    func viewOnAppear() {
-        model?.dispalyLoading()
+    func viewOnAppear(forecast: ForecastResponse) {
+        let optionalToday = forecast.forecast?.forecastday?[0]
+        let optionalTomorrow = forecast.forecast?.forecastday?[1]
         
-        observeCoordinateUpdates()
+        if let today = optionalToday {
+            getSunsetCondition(forecastday: today)
+        } else {
+            Logger.statistics.error("forecastday today not found")
+        }
         
-        observeDeniedLocationAccess()
-        
-        requestLocationUpdates()
+        if let tomorrow = optionalTomorrow  {
+            getTomorrowCondition(forecastday: tomorrow)
+        }
+        else {
+            Logger.statistics.error("forecastday tomorrow not found")
+        }
     }
-
-//    func onTapUrlContent(id: String) {
-//        guard let content = contents.first(where: { $0.id == id }) else { return }
-//        routeModel?.routeToVideoPlayer(content: content)
-//    }
     
-    private func invokeForecast(location: String) {
-        forecastInteractor.getForecast(location: location)
+    internal func getSunsetCondition(forecastday: Forecastday) {
+        let subject = PassthroughSubject<Hour?, ApplicationErrors>()
+        let publisher = subject.eraseToAnyPublisher()
+        
+        publisher
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .tryMap {
+                if let hour = $0 {
+                    return hour
+                }
+                
+                throw ApplicationErrors.unexpectedResponse
+            }
+            .extractUnderlyingError()
             .sinkToResult { result in
                 switch result {
-                case let .success(result):
-                    if let forecastResult = result {
-                        DeviceLocationService.shared.stopLocationUpdates()
-                        isNightChecker.checkIfIsNightTime(forecast: forecastResult)
-                        self.model?.updateForecast(location: forecastResult.location, currentCondition: forecastResult.current, forecast: forecastResult)
-                    }
-                    
-                case let .failure(error):
-                    Logger.statistics.error("WeatherIntent invokeForecast Error \(error)")
-                    self.model?.dispalyError(error)
+                case .success(let hour):
+                    model?.showCurrentHourCondition(hour: hour)
+                case .failure(_):
+                    model?.showCurrentHourConditionError()
                 }
             }
             .store(in: cancelBag)
+        
+        subject.send(doGetSunsetCondition(forecastday: forecastday))
     }
     
-    func observeCoordinateUpdates() {
-        DeviceLocationService.shared.coordinatesPublisher
+    private func doGetSunsetCondition(forecastday: Forecastday) -> Hour? {
+        var current: Hour? = nil
+        let count = forecastday.hour.count
+        
+        guard let sunset = forecastday.astro?.sunset else {
+            return nil
+        }
+        
+        Logger.statistics.debug("sunset \(sunset)")
+        
+        for (index, h) in forecastday.hour.enumerated() {
+            if index + 1 < count {
+                let next = forecastday.hour[index + 1]
+                
+                if sunset >= h.time && sunset <= next.time {
+                    current = h
+                }
+            }
+        }
+        
+        return current
+    }
+    
+    internal func getTomorrowCondition(forecastday: Forecastday) {
+        let subject = PassthroughSubject<TomorrowConditionDTO, Never>()
+        let publisher = subject.eraseToAnyPublisher()
+        
+        publisher
+            .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
-            .sink { completion in
-                Logger.statistics.error("Handle \(completion.error?.localizedDescription ?? "EMPTY ERROR DESCRIPTION") for error and finished subscription.")
-                
-                model?.dispalyErrorAlert("Coordinates Publisher", "Handle \(completion) for error and finished subscription.")
-            } receiveValue: { coordinates in
-                Logger.statistics.debug("COORDINATES \(coordinates.latitude) , \(coordinates.longitude)")
-                
-                let lat = coordinates.latitude
-                let lon = coordinates.longitude
-                
-                if (lat != 0.0 && lon != 0.0) {
-                    guard let location = "\(lat),\(lon)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
-                        model?.dispalyErrorAlert("Coordinates Publisher", "Encoding coordinates \(coordinates) got south!")
-                        return
-                    }
-                    
-                    invokeForecast(location: location)
+            .extractUnderlyingError()
+            .sinkToResult { result in
+                switch result {
+                case .success(let tomorrow):
+                    model?.showTomorrow(tomorrow: tomorrow)
+                case .failure(_):
+                    model?.showTomorrowError()
                 }
             }
             .store(in: cancelBag)
-    }
-
-    func observeDeniedLocationAccess() {
-        DeviceLocationService.shared.deniedLocationAccessPublisher
-            .receive(on: DispatchQueue.main)
-            .sink {
-                Logger.statistics.error("Handle access denied event, possibly with an alert.")
-                model?.dispalyErrorAlert("Location Update", "Location Access Denied")
-            }
-            .store(in: cancelBag)
+        
+        subject.send(dogGetTomorrowCondition(forecastday: forecastday))
     }
     
-    func requestLocationUpdates() {
-        DeviceLocationService.shared.requestLocationUpdates()
-    }
-    
-    func dispalyLocationDenied() {
-        model?.dispalyLocationDenied()
+    private func dogGetTomorrowCondition(forecastday: Forecastday) -> TomorrowConditionDTO {
+        let minTemp = forecastday.day?.mintempC ?? Constants.ERROR_VALUE
+        let maxTemp = forecastday.day?.maxtempC ?? Constants.ERROR_VALUE
+        let formatTemperature = NSLocalizedString("min_max_temperature", comment: "")
+        
+        let minMaxTemperature = String(format: formatTemperature, "\(minTemp)", "\(maxTemp)")
+        let formattedDay = DateFormatter.formatWith(date: forecastday.date, format: Constants.DAY_OF_THE_WEEK_DATE_FORMAT)
+        
+        let tomorrow = TomorrowConditionDTO(
+            dayOfTheWeek: formattedDay,
+            minMaxTemperature: minMaxTemperature,
+            temperature: forecastday.day?.avgtempC ?? Constants.ERROR_VALUE,
+            iconCode: forecastday.day?.condition.code ?? Int(Constants.ERROR_VALUE))
+        
+        Logger.statistics.debug("tomorrow is \(formattedDay) - avg \(forecastday.day?.avgtempC ?? Constants.ERROR_VALUE)")
+        
+        return tomorrow
     }
 }
 

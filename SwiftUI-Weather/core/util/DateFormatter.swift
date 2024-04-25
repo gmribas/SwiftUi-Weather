@@ -12,18 +12,27 @@ extension DateFormatter {
     static let apiDateHourFormat: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = Constants.API_DATE_HOUR_FORMAT
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
+        formatter.locale = Locale.current
         return formatter
     }()
 
     static let apiDateFormat: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = Constants.API_DATE_FORMAT
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
+        formatter.locale = Locale.current
+        return formatter
+    }()
+
+    static let apiHourMinuteFormat: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = Constants.HOUR_MINUTE_DATE_FORMAT
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
+        formatter.locale = Locale.current
         return formatter
     }()
     

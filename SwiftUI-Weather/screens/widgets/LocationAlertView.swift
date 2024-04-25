@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LocationAlertView: View {
     
-    @Binding var errorAlert: Bool
+    @State var errorAlert: Bool
     let title, message: String
     
     var body: some View {

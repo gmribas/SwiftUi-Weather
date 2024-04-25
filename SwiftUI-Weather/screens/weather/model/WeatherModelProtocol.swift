@@ -10,21 +10,20 @@ import Foundation
 // MARK: - View State
 
 protocol WeatherModelStatePotocol {
-    var contentState: WeatherTypes.Model.ContentState { get }
-    var loadingText: String { get }
-    var navigationTitle: String { get }
-
+    var sunsetState: WeatherTypes.Model.SunsetState { get }
+    var tomorrowState: WeatherTypes.Model.TomorrowState { get }
     var routerSubject: WeatherRouter.Subjects { get }
+    var today: Forecastday? { get }
+    var tomorrow: Forecastday? { get }
 }
 
 // MARK: - Intent Actions
 
 protocol WeatherModelActionsProtocol: AnyObject {
-    func dispalyLoading()
-    func updateForecast(location: Location, currentCondition: CurrentCondition, forecast: ForecastResponse)
-    func dispalyError(_ error: Error)
-    func dispalyErrorAlert(_ title: String, _ message: String)
-    func dispalyLocationDenied()
+    func showCurrentHourCondition(hour: Hour)
+    func showCurrentHourConditionError()
+    func showTomorrow(tomorrow: TomorrowConditionDTO)
+    func showTomorrowError()
 }
 
 

@@ -49,6 +49,9 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             guard httpCodes.contains(code) else {
                 throw APIError.httpCode(code)
             }
+            
+//            rawValueLogger(data: data)
+            
             return data
         }
         .extractUnderlyingError()
@@ -62,5 +65,16 @@ private extension Publisher where Output == URLSession.DataTaskPublisher.Output 
             .decode(type: Value.self, decoder: jsonDecoder)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+}
+
+
+private func rawValueLogger(data: Data) {
+    if let string = String(bytes: data, encoding: .utf8) {
+        Logger.statistics.debug("raw value -> \(string)")
+        Logger.statistics.debug("=======================")
+        Logger.statistics.debug("=======================")
+    } else {
+        Logger.statistics.debug("not a valid UTF-8 sequence")
     }
 }

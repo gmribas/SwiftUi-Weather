@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import OSLog
 
 struct WeatherView: View {
     
@@ -59,7 +60,8 @@ struct WeatherView: View {
                maxWidth: frameWidht,
                minHeight: 0,
                maxHeight: frameHeight,
-               alignment: .top)
+               alignment: .top
+        )
     }
 }
 

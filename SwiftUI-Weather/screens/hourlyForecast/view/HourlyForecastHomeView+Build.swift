@@ -10,6 +10,6 @@ import SwiftUI
 extension HourlyForecastHomeView {
 
     static func build(isNightChecker: IsNightChecker, forecast: ForecastResponse) -> some View {
-        return HourlyForecastHomeView(isNightChecker: Binding.constant(isNightChecker), forecast: Binding.constant(forecast))
+        return HourlyForecastHomeView(isNightChecker: isNightChecker, forecast: forecast)
     }
 }

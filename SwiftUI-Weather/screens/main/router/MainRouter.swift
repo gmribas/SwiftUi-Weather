@@ -13,7 +13,10 @@ struct MainRouter: RouterProtocol {
     typealias RouterAlertType = AlertScreen
 
     let subjects: Subjects
+    
     let intent: MainIntentProtocol
+    
+    @Inject var model: MainModel
 }
 
 // MARK: - Navigation Screens
@@ -34,7 +37,7 @@ extension MainRouter {
     func makeScreen(type: RouterScreenType) -> some View {
         switch type {
         case .showMainWindow:
-            MainView.build()
+            MainView.build(model: self.model, intent: self.intent as! MainIntent)
         }
     }
 

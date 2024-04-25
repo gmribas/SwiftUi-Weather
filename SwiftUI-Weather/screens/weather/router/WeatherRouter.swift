@@ -13,7 +13,12 @@ struct WeatherRouter: RouterProtocol {
     typealias RouterAlertType = AlertScreen
 
     let subjects: Subjects
+    
     let intent: WeatherIntentProtocol
+    
+    @Inject var model: WeatherModelStatePotocol
+    
+    @Inject var isNightChecker: IsNightChecker
 }
 
 // MARK: - Navigation Screens
@@ -34,7 +39,15 @@ extension WeatherRouter {
     func makeScreen(type: RouterScreenType) -> some View {
         switch type {
         case .showHomeWeather:
-//            WeatherHomeView.build()
+//            WeatherHomeView
+//                .build(
+//                    model: self.model,
+//                    intent: self.intent,
+//                    isNightChecker: self.isNightChecker,
+//                    location: location,
+//                    currentCondition: currentCondition,
+//                    forecast: forecast
+//                )
             Text("")
         }
     }

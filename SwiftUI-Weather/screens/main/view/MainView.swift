@@ -22,6 +22,8 @@ struct MainView: View {
     
     var body: some View {
         ZStack {
+            BackgroundView(isNight: $isNightChecker.isNight)
+            
             VStack {
                 switch state.contentState {
                 case .loading:
@@ -33,7 +35,7 @@ struct MainView: View {
                     Text(text)
                     
                 case .errorAlert(let title, let message):
-                    LocationAlertView(errorAlert: $errorAlert, title: title, message: message)
+                    LocationAlertView(errorAlert: errorAlert, title: title, message: message)
             
                 case .showForecast(location: let location, currentCondition: let currentCondition, forecast: let forecast):
                     TabView {

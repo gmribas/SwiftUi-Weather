@@ -12,9 +12,9 @@ struct HourlyForecastHomeView: View {
     
     @State internal var errorAlert = false
     
-    @Binding internal var isNightChecker: IsNightChecker
+    @State internal var isNightChecker: IsNightChecker
     
-    @Binding internal var forecast: ForecastResponse
+    @State internal var forecast: ForecastResponse
     
     var body: some View {
         ZStack {
@@ -28,7 +28,7 @@ struct HourlyForecastHomeView: View {
                             bottomText: NSLocalizedString("feels_like", comment: "\(item.feelslikeC)"),
                             titleSize: 12,
                             icon: WeatherIconsByCode.getIconByCode(item.condition.code, forceNight: $isNightChecker.isNight),
-                            frameHeight: 150,
+                            frameHeight: 170,
                             frameWidht: .infinity,
                             temperature: item.tempC ?? 0,
                             temperatureSize: 20,

@@ -12,13 +12,19 @@ struct WeatherHomeView: View {
     
     @State internal var errorAlert = false
     
-    @Binding internal var isNightChecker: IsNightChecker
+    @StateObject internal var container: MVIContainer<WeatherIntentProtocol, WeatherModelStatePotocol>
     
-    @Binding internal var location: Location
+    @State internal var isNightChecker: IsNightChecker
     
-    @Binding internal var currentCondition: CurrentCondition
+    @State internal var location: Location
     
-    @Binding internal var forecast: ForecastResponse
+    @State internal var currentCondition: CurrentCondition
+    
+    @State internal var forecast: ForecastResponse
+        
+    private var intent: WeatherIntentProtocol { container.intent }
+    
+    private var state: WeatherModelStatePotocol { container.model }
     
     var body: some View {
         ZStack {
@@ -40,36 +46,81 @@ struct WeatherHomeView: View {
                     textFrameH: 50
                 )
                 
-                let hStackHeight: CGFloat = 180
-                
-                ScrollView(.horizontal) {
-                    HStack(spacing: 15) {
-                        ForEach(forecast.forecast?.forecastday?.first?.hour ?? [Hour](), id: \.timeEpoch) { item in
-                            WeatherView(
-                                title: DateFormatter.formatWith(date: item.time, format: Constants.DAY_MONTH_YEAR_DATE_FORMAT),
-                                bottomText: NSLocalizedString("feels_like", comment: "\(item.feelslikeC)"),
-                                titleSize: 12,
-                                icon: WeatherIconsByCode.getIconByCode(item.condition.code, forceNight: $isNightChecker.isNight),
-                                frameHeight: 130,
-                                frameWidht: hStackHeight,
-                                temperature: item.tempC ?? 0,
-                                temperatureSize: 20,
-                                feelsLikeSize: 25,
-                                iconFrame: 50)
-                        }
-                    }
-                    .frame(height: hStackHeight)
-                }
+                ScrollView(.horizontal, showsIndicators: true) {
+                   HStack(spacing: 25) {
+                       buildSunsetItem()
+                       buildTomorrowItem()
+                   }
+                }
+                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                .frame(maxWidth: .infinity)
             }
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity,
+                alignment: .top
+            )
         }
-        .frame(
-            maxWidth: .infinity,
-            maxHeight: .infinity,
-            alignment: .top
+        .onAppear{
+            intent.viewOnAppear(forecast: forecast)
+        }
+    }
+    
+    private func buildSunsetItem() -> WeatherSimpleView {
+        var title = ""
+        var icon = WeatherIconsByCode.DEFAULT_ERROR_ICON
+        var temperature = 0.0
+        
+        switch state.sunsetState {
+        case .showSunsetCondition(let hour):
+            title = "Sunset"
+//            title = NSLocalizedString("Today", comment: "")
+            icon = WeatherIconsByCode.getIconByCode(hour.condition.code, forceNight: $isNightChecker.isNight)
+            temperature = hour.tempC ?? 0
+        
+        case .showSunsetConditionError :
+            title = "Error sunset"
             
-        )
+        default :
+            title = "Error !!!!"
+        }
+        
+        return buildWeatherSimpleView(title: title, icon: icon, temperature: temperature)
+    }
+    
+    private func buildTomorrowItem() -> WeatherSimpleView {
+        var title = ""
+        var icon = WeatherIconsByCode.DEFAULT_ERROR_ICON
+        var temperature = 0.0
+        
+        switch state.tomorrowState {
+        case .showTomorrow(let tomorrow) :
+            title = tomorrow.dayOfTheWeek
+            icon = WeatherIconsByCode.getIconByCode(tomorrow.iconCode, forceNight: $isNightChecker.isNight)
+            temperature = tomorrow.temperature
+            
+        case .showTomorrowError :
+            title = "Error getting tomorrow condition"
+            
+        default :
+            title = "Error !!!!"
+        }
+        
+        return buildWeatherSimpleView(title: title, icon: icon, temperature: temperature)
+    }
+    
+    private func buildWeatherSimpleView(title: String, icon: String, temperature: Double) -> WeatherSimpleView {
+        return WeatherSimpleView(
+            title: title,
+            icon: icon,
+            frameHeight: 130,
+            frameWidht: 50,
+            temperature: temperature,
+            temperatureSize: 20,
+            iconFrame: 50)
     }
 }
+
 
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
@@ -84,11 +135,13 @@ struct ContentView_Previews: PreviewProvider {
         let forecastDay = Forecastday(date: Date(), dateEpoch: 0, day: nil, astro: nil, hour: [hour])
         let forecast = Forecast(forecastday: [forecastDay])
         
+        
         WeatherHomeView(
-            isNightChecker: Binding.constant(IsNightChecker()),
-            location: Binding.constant(location),
-            currentCondition: Binding.constant(currentCondition), 
-            forecast: Binding.constant(ForecastResponse(location: location, current: currentCondition, forecast: forecast, alerts: nil)))
+            container: WheatherHomeViewBuilderHelper().buildContainer(),
+            isNightChecker: IsNightChecker(),
+            location: location,
+            currentCondition: currentCondition,
+            forecast: ForecastResponse(location: location, current: currentCondition, forecast: forecast, alerts: nil))
     }
 }
 #endif
